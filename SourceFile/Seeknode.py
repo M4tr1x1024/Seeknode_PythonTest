@@ -1,7 +1,7 @@
 from pyvis.network import Network
 import pandas as pd
 
-got_net = Network(height='750px', width='100%', bgcolor='#F9F9FB',
+got_net = Network(height='1920px', width='100%', bgcolor='#F9F9FB',
 font_color='#232333', notebook = False, select_menu = True)
 
 # set the physics layout of the network
