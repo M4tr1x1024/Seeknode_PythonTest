@@ -1,0 +1,300 @@
+﻿Disease,Symptom,weight
+Dengue,pain_behind_the_eyes,4
+Peptic ulcer diseae,loss_of_appetite,4
+Chronic cholestasis,vomiting,5
+Bronchial Asthma,cough,4
+Varicose veins,swollen_legs,5
+Jaundice,weight_loss,3
+Hypoglycemia,excessive_hunger,4
+Chronic cholestasis,abdominal_pain,4
+Psoriasis,inflammatory_nails,2
+Cervical spondylosis,weakness_in_limbs,7
+Bronchial Asthma,breathlessness,4
+(vertigo) Paroymsal  Positional Vertigo,vomiting,5
+Chicken pox,swelled_lymph_nodes,6
+Arthritis,swelling_joints,5
+Tuberculosis,sweating,3
+Tuberculosis,vomiting,5
+Dengue,fatigue,4
+Pneumonia,chest_pain,7
+Hypoglycemia,irritability,2
+Common Cold,continuous_sneezing,4
+Paralysis (brain hemorrhage),vomiting,5
+Hepatitis B,abdominal_pain,4
+Hyperthyroidism,weight_loss,3
+Hepatitis D,yellowing_of_eyes,4
+hepatitis A,diarrhoea,6
+Diabetes,irregular_sugar_level,5
+Migraine,excessive_hunger,4
+Impetigo,skin_rash,3
+Jaundice,high_fever,7
+Chronic cholestasis,yellowing_of_eyes,4
+Hepatitis D,loss_of_appetite,4
+Chronic cholestasis,itching,1
+Hepatitis D,vomiting,5
+Dimorphic hemmorhoids(piles),pain_in_anal_region,6
+AIDS,muscle_wasting,3
+Diabetes,weight_loss,3
+Drug Reaction,itching,1
+Fungal infection,skin_rash,3
+Alcoholic hepatitis,distention_of_abdomen,4
+Heart attack,chest_pain,7
+Bronchial Asthma,family_history,5
+Chicken pox,itching,1
+Paralysis (brain hemorrhage),weakness_of_one_body_side,4
+Psoriasis,silver_like_dusting,2
+Migraine,visual_disturbances,3
+hepatitis A,mild_fever,5
+hepatitis A,vomiting,5
+Hepatitis E,yellowish_skin,3
+Heart attack,sweating,3
+Tuberculosis,loss_of_appetite,4
+Chronic cholestasis,loss_of_appetite,4
+Dimorphic hemmorhoids(piles),constipation,4
+Chicken pox,loss_of_appetite,4
+Hypoglycemia,blurred_and_distorted_vision,5
+Diabetes,polyuria,4
+Pneumonia,high_fever,7
+Malaria,chills,3
+Malaria,sweating,3
+Dengue,headache,3
+Hypoglycemia,sweating,3
+Drug Reaction,stomach_pain,5
+Cervical spondylosis,neck_pain,5
+Chicken pox,headache,3
+Gastroenteritis,sunken_eyes,3
+Impetigo,blister,4
+Hepatitis B,loss_of_appetite,4
+Jaundice,dark_urine,4
+AIDS,patches_in_throat,6
+Jaundice,abdominal_pain,4
+Dengue,vomiting,5
+Common Cold,throat_irritation,4
+Gastroenteritis,vomiting,5
+Hepatitis C,yellowing_of_eyes,4
+Drug Reaction,burning_micturition,6
+GERD,chest_pain,7
+Varicose veins,obesity,4
+Diabetes,excessive_hunger,4
+hepatitis A,joint_pain,3
+Typhoid,high_fever,7
+Tuberculosis,chills,3
+Bronchial Asthma,high_fever,7
+Pneumonia,phlegm,5
+Typhoid,belly_pain,4
+Typhoid,fatigue,4
+Malaria,high_fever,7
+Common Cold,malaise,6
+Diabetes,lethargy,2
+Pneumonia,cough,4
+Urinary tract infection,bladder_discomfort,4
+Hepatitis C,loss_of_appetite,4
+Tuberculosis,yellowing_of_eyes,4
+Alcoholic hepatitis,fluid_overload,4
+Alcoholic hepatitis,fluid_overload,6
+Hypoglycemia,slurred_speech,4
+Malaria,vomiting,5
+Typhoid,nausea,5
+(vertigo) Paroymsal  Positional Vertigo,loss_of_balance,4
+Common Cold,swelled_lymph_nodes,6
+Jaundice,itching,1
+Hypoglycemia,fatigue,4
+Chicken pox,fatigue,4
+Diabetes,increased_appetite,5
+Osteoarthristis,hip_joint_pain,2
+Malaria,diarrhoea,6
+Hepatitis D,dark_urine,4
+Allergy,continuous_sneezing,4
+Tuberculosis,mild_fever,5
+Bronchial Asthma,mucoid_sputum,4
+Impetigo,high_fever,7
+Hepatitis D,yellowish_skin,3
+AIDS,extra_marital_contacts,5
+Varicose veins,fatigue,4
+Pneumonia,fatigue,4
+Peptic ulcer diseae,passage_of_gases,5
+Hepatitis D,nausea,5
+Chicken pox,high_fever,7
+Common Cold,high_fever,7
+Hepatitis E,fatigue,4
+Hepatitis E,yellowing_of_eyes,4
+Common Cold,fatigue,4
+Jaundice,yellowish_skin,3
+Fungal infection,nodal_skin_eruptions,4
+Cervical spondylosis,back_pain,3
+Hypothyroidism,mood_swings,3
+hepatitis A,nausea,5
+Pneumonia,chills,3
+Hepatitis E,dark_urine,4
+Common Cold,redness_of_eyes,5
+Migraine,headache,3
+Hypoglycemia,headache,3
+Migraine,depression,3
+Migraine,blurred_and_distorted_vision,5
+Dengue,loss_of_appetite,4
+Urinary tract infection,burning_micturition,6
+Hepatitis E,high_fever,7
+hepatitis A,loss_of_appetite,4
+Dimorphic hemmorhoids(piles),bloody_stool,5
+Hepatitis B,yellowing_of_eyes,4
+Hypoglycemia,nausea,5
+Hepatitis C,family_history,5
+AIDS,high_fever,7
+Hepatitis D,abdominal_pain,4
+GERD,ulcers_on_tongue,4
+Hepatitis D,joint_pain,3
+Peptic ulcer diseae,indigestion,5
+Migraine,acidity,3
+Hepatitis C,yellowish_skin,3
+Cervical spondylosis,loss_of_balance,4
+Acne,blackheads,2
+Jaundice,fatigue,4
+Hypertension,loss_of_balance,4
+Drug Reaction,skin_rash,3
+Jaundice,vomiting,5
+Alcoholic hepatitis,abdominal_pain,4
+Diabetes,restlessness,5
+(vertigo) Paroymsal  Positional Vertigo,spinning_movements,6
+Typhoid,toxic_look_(typhos),5
+hepatitis A,muscle_pain,2
+Alcoholic hepatitis,swelling_of_stomach,7
+Common Cold,chills,3
+Paralysis (brain hemorrhage),headache,3
+Heart attack,vomiting,5
+Hyperthyroidism,diarrhoea,6
+Psoriasis,skin_peeling,3
+Paralysis (brain hemorrhage),altered_sensorium,2
+Typhoid,headache,3
+Tuberculosis,cough,4
+Dengue,joint_pain,3
+Arthritis,painful_walking,2
+Dengue,nausea,5
+Dengue,back_pain,3
+Diabetes,blurred_and_distorted_vision,5
+Arthritis,stiff_neck,4
+GERD,cough,4
+Acne,skin_rash,3
+Dengue,skin_rash,3
+Hypothyroidism,brittle_nails,5
+Chicken pox,malaise,6
+Dengue,chills,3
+GERD,acidity,3
+Chicken pox,mild_fever,5
+Tuberculosis,high_fever,7
+Chicken pox,red_spots_over_body,3
+Pneumonia,malaise,6
+Tuberculosis,breathlessness,4
+Peptic ulcer diseae,vomiting,5
+Hypothyroidism,lethargy,2
+Alcoholic hepatitis,vomiting,5
+Peptic ulcer diseae,abdominal_pain,4
+Osteoarthristis,swelling_joints,5
+Fungal infection,itching,1
+Malaria,nausea,5
+(vertigo) Paroymsal  Positional Vertigo,unsteadiness,4
+Psoriasis,joint_pain,3
+Tuberculosis,fatigue,4
+Hyperthyroidism,restlessness,5
+Varicose veins,cramps,4
+Alcoholic hepatitis,yellowish_skin,3
+Varicose veins,bruising,4
+Hypothyroidism,puffy_face_and_eyes,5
+Hyperthyroidism,irritability,2
+GERD,stomach_pain,5
+Hepatitis E,loss_of_appetite,4
+Arthritis,movement_stiffness,5
+Hepatitis B,lethargy,2
+Hepatitis B,yellow_urine,4
+Diabetes,obesity,4
+Gastroenteritis,dehydration,4
+Chronic cholestasis,nausea,5
+Hepatitis C,fatigue,4
+Hepatitis E,vomiting,5
+Pneumonia,fast_heart_rate,5
+Chicken pox,lethargy,2
+Alcoholic hepatitis,history_of_alcohol_consumption,5
+Hyperthyroidism,abnormal_menstruation,6
+Pneumonia,breathlessness,4
+Common Cold,phlegm,5
+Psoriasis,small_dents_in_nails,2
+Hyperthyroidism,muscle_weakness,2
+Hypoglycemia,anxiety,4
+Hyperthyroidism,excessive_hunger,4
+Hypertension,headache,3
+hepatitis A,dark_urine,4
+Typhoid,constipation,4
+Psoriasis,skin_rash,3
+Allergy,watering_from_eyes,4
+Hepatitis B,yellowish_skin,3
+Urinary tract infection,continuous_feel_of_urine,6
+(vertigo) Paroymsal  Positional Vertigo,nausea,5
+Hypothyroidism,enlarged_thyroid,6
+Osteoarthristis,knee_pain,3
+Osteoarthristis,joint_pain,3
+Hypertension,dizziness,4
+Hepatitis B,dark_urine,4
+Osteoarthristis,painful_walking,2
+Hypothyroidism,weight_gain,3
+Varicose veins,swollen_blood_vessels,5
+Hypertension,lack_of_concentration,3
+Hyperthyroidism,fast_heart_rate,5
+hepatitis A,abdominal_pain,4
+Migraine,irritability,2
+Chronic cholestasis,yellowish_skin,3
+Diabetes,fatigue,4
+hepatitis A,yellowing_of_eyes,4
+(vertigo) Paroymsal  Positional Vertigo,headache,3
+Heart attack,breathlessness,4
+Impetigo,yellow_crust_ooze,3
+Common Cold,cough,4
+Hyperthyroidism,fatigue,4
+hepatitis A,yellowish_skin,3
+Migraine,stiff_neck,4
+Common Cold,headache,3
+Typhoid,diarrhoea,6
+Hypothyroidism,depression,3
+Hepatitis C,nausea,5
+Pneumonia,sweating,3
+Tuberculosis,weight_loss,3
+Dimorphic hemmorhoids(piles),pain_during_bowel_movements,5
+GERD,vomiting,5
+Hepatitis E,abdominal_pain,4
+Hepatitis B,itching,1
+Typhoid,vomiting,5
+Migraine,indigestion,5
+Chicken pox,skin_rash,3
+Hyperthyroidism,mood_swings,3
+Hepatitis E,joint_pain,3
+Malaria,muscle_pain,2
+Hyperthyroidism,sweating,3
+Dimorphic hemmorhoids(piles),irritation_in_anus,6
+Gastroenteritis,diarrhoea,6
+Acne,scurring,2
+Allergy,chills,3
+Bronchial Asthma,fatigue,4
+Hypothyroidism,swollen_extremeties,5
+Hypothyroidism,cold_hands_and_feets,5
+Hypoglycemia,drying_and_tingling_lips,4
+Hypothyroidism,dizziness,4
+Dengue,high_fever,7
+Pneumonia,rusty_sputum,4
+Varicose veins,prominent_veins_on_calf,6
+Osteoarthristis,neck_pain,5
+Arthritis,muscle_weakness,2
+Impetigo,red_sore_around_nose,2
+Hypoglycemia,vomiting,5
+Peptic ulcer diseae,internal_itching,4
+Hepatitis E,acute_liver_failure,6
+Typhoid,abdominal_pain,4
+Acne,pus_filled_pimples,2
+Hypothyroidism,fatigue,4
+Cervical spondylosis,dizziness,4
+Hepatitis B,fatigue,4
+Malaria,headache,3
+Hepatitis B,receiving_blood_transfusion,5
+Hepatitis D,fatigue,4
+Allergy,shivering,5
+Hypertension,chest_pain,7
+Hepatitis E,nausea,5
+Hepatitis B,malaise,6
+Typhoid,chills,3

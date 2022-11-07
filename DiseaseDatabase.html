@@ -1,0 +1,575 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+                <link href="lib/tom-select/tom-select.css" rel="stylesheet">
+                <script src="lib/tom-select/tom-select.complete.min.js"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 750px;
+                 background-color: #F9F9FB;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+             #loadingBar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width: 100%;
+                 height: 750px;
+                 background-color:rgba(200,200,200,0.8);
+                 -webkit-transition: all 0.5s ease;
+                 -moz-transition: all 0.5s ease;
+                 -ms-transition: all 0.5s ease;
+                 -o-transition: all 0.5s ease;
+                 transition: all 0.5s ease;
+                 opacity:1;
+             }
+
+             #bar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width:20px;
+                 height:20px;
+                 margin:auto auto auto auto;
+                 border-radius:11px;
+                 border:2px solid rgba(30,30,30,0.05);
+                 background: rgb(0, 173, 246); /* Old browsers */
+                 box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
+             }
+
+             #border {
+                 position:absolute;
+                 top:10px;
+                 left:10px;
+                 width:500px;
+                 height:23px;
+                 margin:auto auto auto auto;
+                 box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+                 border-radius:10px;
+             }
+
+             #text {
+                 position:absolute;
+                 top:8px;
+                 left:530px;
+                 width:30px;
+                 height:50px;
+                 margin:auto auto auto auto;
+                 font-size:22px;
+                 color: #000000;
+             }
+
+             div.outerBorder {
+                 position:relative;
+                 top:400px;
+                 width:600px;
+                 height:44px;
+                 margin:auto auto auto auto;
+                 border:8px solid rgba(0,0,0,0.1);
+                 background: rgb(252,252,252); /* Old browsers */
+                 background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+                 background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+                 background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+                 background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+                 background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+                 border-radius:72px;
+                 box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+             }
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+                <div id="select-menu" class="card-header">
+                    <div class="row no-gutters">
+                        <div class="col-10 pb-2">
+                            <select
+                            class="form-select"
+                            aria-label="Default select example"
+                            onchange="selectNode([value]);"
+                            id="select-node"
+                            placeholder="Select node..."
+                            >
+                                <option selected>Select a Node by ID</option>
+                                
+                                    <option value="Dengue">Dengue</option>
+                                
+                                    <option value="pain_behind_the_eyes">pain_behind_the_eyes</option>
+                                
+                                    <option value="Peptic ulcer diseae">Peptic ulcer diseae</option>
+                                
+                                    <option value="loss_of_appetite">loss_of_appetite</option>
+                                
+                                    <option value="Chronic cholestasis">Chronic cholestasis</option>
+                                
+                                    <option value="vomiting">vomiting</option>
+                                
+                                    <option value="Bronchial Asthma">Bronchial Asthma</option>
+                                
+                                    <option value="cough">cough</option>
+                                
+                                    <option value="Varicose veins">Varicose veins</option>
+                                
+                                    <option value="swollen_legs">swollen_legs</option>
+                                
+                                    <option value="Jaundice">Jaundice</option>
+                                
+                                    <option value="weight_loss">weight_loss</option>
+                                
+                                    <option value="Hypoglycemia">Hypoglycemia</option>
+                                
+                                    <option value="excessive_hunger">excessive_hunger</option>
+                                
+                                    <option value="abdominal_pain">abdominal_pain</option>
+                                
+                                    <option value="Psoriasis">Psoriasis</option>
+                                
+                                    <option value="inflammatory_nails">inflammatory_nails</option>
+                                
+                                    <option value="Cervical spondylosis">Cervical spondylosis</option>
+                                
+                                    <option value="weakness_in_limbs">weakness_in_limbs</option>
+                                
+                                    <option value="breathlessness">breathlessness</option>
+                                
+                                    <option value="(vertigo) Paroymsal  Positional Vertigo">(vertigo) Paroymsal  Positional Vertigo</option>
+                                
+                                    <option value="Chicken pox">Chicken pox</option>
+                                
+                                    <option value="swelled_lymph_nodes">swelled_lymph_nodes</option>
+                                
+                                    <option value="Arthritis">Arthritis</option>
+                                
+                                    <option value="swelling_joints">swelling_joints</option>
+                                
+                                    <option value="Tuberculosis">Tuberculosis</option>
+                                
+                                    <option value="sweating">sweating</option>
+                                
+                                    <option value="fatigue">fatigue</option>
+                                
+                                    <option value="Pneumonia">Pneumonia</option>
+                                
+                                    <option value="chest_pain">chest_pain</option>
+                                
+                                    <option value="irritability">irritability</option>
+                                
+                                    <option value="Common Cold">Common Cold</option>
+                                
+                                    <option value="continuous_sneezing">continuous_sneezing</option>
+                                
+                                    <option value="Paralysis (brain hemorrhage)">Paralysis (brain hemorrhage)</option>
+                                
+                                    <option value="Hepatitis B">Hepatitis B</option>
+                                
+                                    <option value="Hyperthyroidism">Hyperthyroidism</option>
+                                
+                                    <option value="Hepatitis D">Hepatitis D</option>
+                                
+                                    <option value="yellowing_of_eyes">yellowing_of_eyes</option>
+                                
+                                    <option value="hepatitis A">hepatitis A</option>
+                                
+                                    <option value="diarrhoea">diarrhoea</option>
+                                
+                                    <option value="Diabetes">Diabetes</option>
+                                
+                                    <option value="irregular_sugar_level">irregular_sugar_level</option>
+                                
+                                    <option value="Migraine">Migraine</option>
+                                
+                                    <option value="Impetigo">Impetigo</option>
+                                
+                                    <option value="skin_rash">skin_rash</option>
+                                
+                                    <option value="high_fever">high_fever</option>
+                                
+                                    <option value="itching">itching</option>
+                                
+                                    <option value="Dimorphic hemmorhoids(piles)">Dimorphic hemmorhoids(piles)</option>
+                                
+                                    <option value="pain_in_anal_region">pain_in_anal_region</option>
+                                
+                                    <option value="AIDS">AIDS</option>
+                                
+                                    <option value="muscle_wasting">muscle_wasting</option>
+                                
+                                    <option value="Drug Reaction">Drug Reaction</option>
+                                
+                                    <option value="Fungal infection">Fungal infection</option>
+                                
+                                    <option value="Alcoholic hepatitis">Alcoholic hepatitis</option>
+                                
+                                    <option value="distention_of_abdomen">distention_of_abdomen</option>
+                                
+                                    <option value="Heart attack">Heart attack</option>
+                                
+                                    <option value="family_history">family_history</option>
+                                
+                                    <option value="weakness_of_one_body_side">weakness_of_one_body_side</option>
+                                
+                                    <option value="silver_like_dusting">silver_like_dusting</option>
+                                
+                                    <option value="visual_disturbances">visual_disturbances</option>
+                                
+                                    <option value="mild_fever">mild_fever</option>
+                                
+                                    <option value="Hepatitis E">Hepatitis E</option>
+                                
+                                    <option value="yellowish_skin">yellowish_skin</option>
+                                
+                                    <option value="constipation">constipation</option>
+                                
+                                    <option value="blurred_and_distorted_vision">blurred_and_distorted_vision</option>
+                                
+                                    <option value="polyuria">polyuria</option>
+                                
+                                    <option value="Malaria">Malaria</option>
+                                
+                                    <option value="chills">chills</option>
+                                
+                                    <option value="headache">headache</option>
+                                
+                                    <option value="stomach_pain">stomach_pain</option>
+                                
+                                    <option value="neck_pain">neck_pain</option>
+                                
+                                    <option value="Gastroenteritis">Gastroenteritis</option>
+                                
+                                    <option value="sunken_eyes">sunken_eyes</option>
+                                
+                                    <option value="blister">blister</option>
+                                
+                                    <option value="dark_urine">dark_urine</option>
+                                
+                                    <option value="patches_in_throat">patches_in_throat</option>
+                                
+                                    <option value="throat_irritation">throat_irritation</option>
+                                
+                                    <option value="Hepatitis C">Hepatitis C</option>
+                                
+                                    <option value="burning_micturition">burning_micturition</option>
+                                
+                                    <option value="GERD">GERD</option>
+                                
+                                    <option value="obesity">obesity</option>
+                                
+                                    <option value="joint_pain">joint_pain</option>
+                                
+                                    <option value="Typhoid">Typhoid</option>
+                                
+                                    <option value="phlegm">phlegm</option>
+                                
+                                    <option value="belly_pain">belly_pain</option>
+                                
+                                    <option value="malaise">malaise</option>
+                                
+                                    <option value="lethargy">lethargy</option>
+                                
+                                    <option value="Urinary tract infection">Urinary tract infection</option>
+                                
+                                    <option value="bladder_discomfort">bladder_discomfort</option>
+                                
+                                    <option value="fluid_overload">fluid_overload</option>
+                                
+                                    <option value="slurred_speech">slurred_speech</option>
+                                
+                                    <option value="nausea">nausea</option>
+                                
+                                    <option value="loss_of_balance">loss_of_balance</option>
+                                
+                                    <option value="increased_appetite">increased_appetite</option>
+                                
+                                    <option value="Osteoarthristis">Osteoarthristis</option>
+                                
+                                    <option value="hip_joint_pain">hip_joint_pain</option>
+                                
+                                    <option value="Allergy">Allergy</option>
+                                
+                                    <option value="mucoid_sputum">mucoid_sputum</option>
+                                
+                                    <option value="extra_marital_contacts">extra_marital_contacts</option>
+                                
+                                    <option value="passage_of_gases">passage_of_gases</option>
+                                
+                                    <option value="nodal_skin_eruptions">nodal_skin_eruptions</option>
+                                
+                                    <option value="back_pain">back_pain</option>
+                                
+                                    <option value="Hypothyroidism">Hypothyroidism</option>
+                                
+                                    <option value="mood_swings">mood_swings</option>
+                                
+                                    <option value="redness_of_eyes">redness_of_eyes</option>
+                                
+                                    <option value="depression">depression</option>
+                                
+                                    <option value="bloody_stool">bloody_stool</option>
+                                
+                                    <option value="ulcers_on_tongue">ulcers_on_tongue</option>
+                                
+                                    <option value="indigestion">indigestion</option>
+                                
+                                    <option value="acidity">acidity</option>
+                                
+                                    <option value="Acne">Acne</option>
+                                
+                                    <option value="blackheads">blackheads</option>
+                                
+                                    <option value="Hypertension">Hypertension</option>
+                                
+                                    <option value="restlessness">restlessness</option>
+                                
+                                    <option value="spinning_movements">spinning_movements</option>
+                                
+                                    <option value="toxic_look_(typhos)">toxic_look_(typhos)</option>
+                                
+                                    <option value="muscle_pain">muscle_pain</option>
+                                
+                                    <option value="swelling_of_stomach">swelling_of_stomach</option>
+                                
+                                    <option value="skin_peeling">skin_peeling</option>
+                                
+                                    <option value="altered_sensorium">altered_sensorium</option>
+                                
+                                    <option value="painful_walking">painful_walking</option>
+                                
+                                    <option value="stiff_neck">stiff_neck</option>
+                                
+                                    <option value="brittle_nails">brittle_nails</option>
+                                
+                                    <option value="red_spots_over_body">red_spots_over_body</option>
+                                
+                                    <option value="unsteadiness">unsteadiness</option>
+                                
+                                    <option value="cramps">cramps</option>
+                                
+                                    <option value="bruising">bruising</option>
+                                
+                                    <option value="puffy_face_and_eyes">puffy_face_and_eyes</option>
+                                
+                                    <option value="movement_stiffness">movement_stiffness</option>
+                                
+                                    <option value="yellow_urine">yellow_urine</option>
+                                
+                                    <option value="dehydration">dehydration</option>
+                                
+                                    <option value="fast_heart_rate">fast_heart_rate</option>
+                                
+                                    <option value="history_of_alcohol_consumption">history_of_alcohol_consumption</option>
+                                
+                                    <option value="abnormal_menstruation">abnormal_menstruation</option>
+                                
+                                    <option value="small_dents_in_nails">small_dents_in_nails</option>
+                                
+                                    <option value="muscle_weakness">muscle_weakness</option>
+                                
+                                    <option value="anxiety">anxiety</option>
+                                
+                                    <option value="watering_from_eyes">watering_from_eyes</option>
+                                
+                                    <option value="continuous_feel_of_urine">continuous_feel_of_urine</option>
+                                
+                                    <option value="enlarged_thyroid">enlarged_thyroid</option>
+                                
+                                    <option value="knee_pain">knee_pain</option>
+                                
+                                    <option value="dizziness">dizziness</option>
+                                
+                                    <option value="weight_gain">weight_gain</option>
+                                
+                                    <option value="swollen_blood_vessels">swollen_blood_vessels</option>
+                                
+                                    <option value="lack_of_concentration">lack_of_concentration</option>
+                                
+                                    <option value="yellow_crust_ooze">yellow_crust_ooze</option>
+                                
+                                    <option value="pain_during_bowel_movements">pain_during_bowel_movements</option>
+                                
+                                    <option value="irritation_in_anus">irritation_in_anus</option>
+                                
+                                    <option value="scurring">scurring</option>
+                                
+                                    <option value="swollen_extremeties">swollen_extremeties</option>
+                                
+                                    <option value="cold_hands_and_feets">cold_hands_and_feets</option>
+                                
+                                    <option value="drying_and_tingling_lips">drying_and_tingling_lips</option>
+                                
+                                    <option value="rusty_sputum">rusty_sputum</option>
+                                
+                                    <option value="prominent_veins_on_calf">prominent_veins_on_calf</option>
+                                
+                                    <option value="red_sore_around_nose">red_sore_around_nose</option>
+                                
+                                    <option value="internal_itching">internal_itching</option>
+                                
+                                    <option value="acute_liver_failure">acute_liver_failure</option>
+                                
+                                    <option value="pus_filled_pimples">pus_filled_pimples</option>
+                                
+                                    <option value="receiving_blood_transfusion">receiving_blood_transfusion</option>
+                                
+                                    <option value="shivering">shivering</option>
+                                
+                            </select>
+                        </div>
+                        <div class="col-2 pb-2">
+                            <button type="button" class="btn btn-primary btn-block" onclick="neighbourhoodHighlight({nodes: []});">Reset Selection</button>
+                        </div>
+                    </div>
+                </div>
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+            <div id="loadingBar">
+              <div class="outerBorder">
+                <div id="text">0%</div>
+                <div id="border">
+                  <div id="bar"></div>
+                </div>
+              </div>
+            </div>
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+                  new TomSelect("#select-node",{
+                      create: false,
+                      sortField: {
+                          field: "text",
+                          direction: "asc"
+                      }
+                  });
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#F46223", "font": {"color": "#232333"}, "id": "Dengue", "label": "Dengue", "shape": "dot", "title": "Dengue Neighbors:\u003cbr\u003eheadache\u003cbr\u003eloss_of_appetite\u003cbr\u003eback_pain\u003cbr\u003efatigue\u003cbr\u003evomiting\u003cbr\u003epain_behind_the_eyes\u003cbr\u003ejoint_pain\u003cbr\u003enausea\u003cbr\u003echills\u003cbr\u003ehigh_fever\u003cbr\u003eskin_rash", "value": 11}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "pain_behind_the_eyes", "label": "pain_behind_the_eyes", "shape": "dot", "title": "pain_behind_the_eyes Neighbors:\u003cbr\u003eDengue", "value": 1}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "Peptic ulcer diseae", "label": "Peptic ulcer diseae", "shape": "dot", "title": "Peptic ulcer diseae Neighbors:\u003cbr\u003eloss_of_appetite\u003cbr\u003eabdominal_pain\u003cbr\u003einternal_itching\u003cbr\u003evomiting\u003cbr\u003eindigestion\u003cbr\u003epassage_of_gases", "value": 6}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "loss_of_appetite", "label": "loss_of_appetite", "shape": "dot", "title": "loss_of_appetite Neighbors:\u003cbr\u003ePeptic ulcer diseae\u003cbr\u003eTuberculosis\u003cbr\u003eChronic cholestasis\u003cbr\u003ehepatitis A\u003cbr\u003eHepatitis D\u003cbr\u003eChicken pox\u003cbr\u003eDengue\u003cbr\u003eHepatitis C\u003cbr\u003eHepatitis B\u003cbr\u003eHepatitis E", "value": 10}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "Chronic cholestasis", "label": "Chronic cholestasis", "shape": "dot", "title": "Chronic cholestasis Neighbors:\u003cbr\u003eloss_of_appetite\u003cbr\u003eyellowish_skin\u003cbr\u003eabdominal_pain\u003cbr\u003eyellowing_of_eyes\u003cbr\u003evomiting\u003cbr\u003eitching\u003cbr\u003enausea", "value": 7}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "vomiting", "label": "vomiting", "shape": "dot", "title": "vomiting Neighbors:\u003cbr\u003ePeptic ulcer diseae\u003cbr\u003eJaundice\u003cbr\u003eAlcoholic hepatitis\u003cbr\u003e(vertigo) Paroymsal  Positional Vertigo\u003cbr\u003eTuberculosis\u003cbr\u003eHypoglycemia\u003cbr\u003eChronic cholestasis\u003cbr\u003ehepatitis A\u003cbr\u003eMalaria\u003cbr\u003eGastroenteritis\u003cbr\u003eHeart attack\u003cbr\u003eHepatitis D\u003cbr\u003eDengue\u003cbr\u003eGERD\u003cbr\u003eHepatitis E\u003cbr\u003eTyphoid\u003cbr\u003eParalysis (brain hemorrhage)", "value": 17}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "Bronchial Asthma", "label": "Bronchial Asthma", "shape": "dot", "title": "Bronchial Asthma Neighbors:\u003cbr\u003emucoid_sputum\u003cbr\u003efamily_history\u003cbr\u003efatigue\u003cbr\u003ehigh_fever\u003cbr\u003ebreathlessness\u003cbr\u003ecough", "value": 6}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "cough", "label": "cough", "shape": "dot", "title": "cough Neighbors:\u003cbr\u003ePneumonia\u003cbr\u003eTuberculosis\u003cbr\u003eBronchial Asthma\u003cbr\u003eGERD\u003cbr\u003eCommon Cold", "value": 5}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "Varicose veins", "label": "Varicose veins", "shape": "dot", "title": "Varicose veins Neighbors:\u003cbr\u003eswollen_legs\u003cbr\u003eobesity\u003cbr\u003ecramps\u003cbr\u003eswollen_blood_vessels\u003cbr\u003efatigue\u003cbr\u003ebruising\u003cbr\u003eprominent_veins_on_calf", "value": 7}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "swollen_legs", "label": "swollen_legs", "shape": "dot", "title": "swollen_legs Neighbors:\u003cbr\u003eVaricose veins", "value": 1}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "Jaundice", "label": "Jaundice", "shape": "dot", "title": "Jaundice Neighbors:\u003cbr\u003eyellowish_skin\u003cbr\u003eabdominal_pain\u003cbr\u003eweight_loss\u003cbr\u003efatigue\u003cbr\u003eitching\u003cbr\u003evomiting\u003cbr\u003ehigh_fever\u003cbr\u003edark_urine", "value": 8}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "weight_loss", "label": "weight_loss", "shape": "dot", "title": "weight_loss Neighbors:\u003cbr\u003eDiabetes\u003cbr\u003eJaundice\u003cbr\u003eTuberculosis\u003cbr\u003eHyperthyroidism", "value": 4}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "Hypoglycemia", "label": "Hypoglycemia", "shape": "dot", "title": "Hypoglycemia Neighbors:\u003cbr\u003eblurred_and_distorted_vision\u003cbr\u003eheadache\u003cbr\u003esweating\u003cbr\u003eirritability\u003cbr\u003eanxiety\u003cbr\u003eexcessive_hunger\u003cbr\u003edrying_and_tingling_lips\u003cbr\u003efatigue\u003cbr\u003evomiting\u003cbr\u003enausea\u003cbr\u003eslurred_speech", "value": 11}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "excessive_hunger", "label": "excessive_hunger", "shape": "dot", "title": "excessive_hunger Neighbors:\u003cbr\u003eHypoglycemia\u003cbr\u003eMigraine\u003cbr\u003eDiabetes\u003cbr\u003eHyperthyroidism", "value": 4}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "abdominal_pain", "label": "abdominal_pain", "shape": "dot", "title": "abdominal_pain Neighbors:\u003cbr\u003ePeptic ulcer diseae\u003cbr\u003eAlcoholic hepatitis\u003cbr\u003eJaundice\u003cbr\u003eChronic cholestasis\u003cbr\u003ehepatitis A\u003cbr\u003eHepatitis D\u003cbr\u003eHepatitis B\u003cbr\u003eHepatitis E\u003cbr\u003eTyphoid", "value": 9}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "Psoriasis", "label": "Psoriasis", "shape": "dot", "title": "Psoriasis Neighbors:\u003cbr\u003esmall_dents_in_nails\u003cbr\u003esilver_like_dusting\u003cbr\u003einflammatory_nails\u003cbr\u003eskin_peeling\u003cbr\u003ejoint_pain\u003cbr\u003eskin_rash", "value": 6}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "inflammatory_nails", "label": "inflammatory_nails", "shape": "dot", "title": "inflammatory_nails Neighbors:\u003cbr\u003ePsoriasis", "value": 1}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "Cervical spondylosis", "label": "Cervical spondylosis", "shape": "dot", "title": "Cervical spondylosis Neighbors:\u003cbr\u003eloss_of_balance\u003cbr\u003eneck_pain\u003cbr\u003eback_pain\u003cbr\u003eweakness_in_limbs\u003cbr\u003edizziness", "value": 5}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "weakness_in_limbs", "label": "weakness_in_limbs", "shape": "dot", "title": "weakness_in_limbs Neighbors:\u003cbr\u003eCervical spondylosis", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "breathlessness", "label": "breathlessness", "shape": "dot", "title": "breathlessness Neighbors:\u003cbr\u003eHeart attack\u003cbr\u003ePneumonia\u003cbr\u003eTuberculosis\u003cbr\u003eBronchial Asthma", "value": 4}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "(vertigo) Paroymsal  Positional Vertigo", "label": "(vertigo) Paroymsal  Positional Vertigo", "shape": "dot", "title": "(vertigo) Paroymsal  Positional Vertigo Neighbors:\u003cbr\u003eheadache\u003cbr\u003espinning_movements\u003cbr\u003evomiting\u003cbr\u003eunsteadiness\u003cbr\u003enausea\u003cbr\u003eloss_of_balance", "value": 6}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "Chicken pox", "label": "Chicken pox", "shape": "dot", "title": "Chicken pox Neighbors:\u003cbr\u003ered_spots_over_body\u003cbr\u003eloss_of_appetite\u003cbr\u003eswelled_lymph_nodes\u003cbr\u003eheadache\u003cbr\u003emalaise\u003cbr\u003elethargy\u003cbr\u003emild_fever\u003cbr\u003efatigue\u003cbr\u003eitching\u003cbr\u003ehigh_fever\u003cbr\u003eskin_rash", "value": 11}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "swelled_lymph_nodes", "label": "swelled_lymph_nodes", "shape": "dot", "title": "swelled_lymph_nodes Neighbors:\u003cbr\u003eChicken pox\u003cbr\u003eCommon Cold", "value": 2}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "Arthritis", "label": "Arthritis", "shape": "dot", "title": "Arthritis Neighbors:\u003cbr\u003eswelling_joints\u003cbr\u003estiff_neck\u003cbr\u003emuscle_weakness\u003cbr\u003emovement_stiffness\u003cbr\u003epainful_walking", "value": 5}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "swelling_joints", "label": "swelling_joints", "shape": "dot", "title": "swelling_joints Neighbors:\u003cbr\u003eOsteoarthristis\u003cbr\u003eArthritis", "value": 2}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "Tuberculosis", "label": "Tuberculosis", "shape": "dot", "title": "Tuberculosis Neighbors:\u003cbr\u003eloss_of_appetite\u003cbr\u003eweight_loss\u003cbr\u003esweating\u003cbr\u003eyellowing_of_eyes\u003cbr\u003emild_fever\u003cbr\u003evomiting\u003cbr\u003efatigue\u003cbr\u003echills\u003cbr\u003ehigh_fever\u003cbr\u003ebreathlessness\u003cbr\u003ecough", "value": 11}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "sweating", "label": "sweating", "shape": "dot", "title": "sweating Neighbors:\u003cbr\u003ePneumonia\u003cbr\u003eTuberculosis\u003cbr\u003eHypoglycemia\u003cbr\u003eMalaria\u003cbr\u003eHeart attack\u003cbr\u003eHyperthyroidism", "value": 6}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "fatigue", "label": "fatigue", "shape": "dot", "title": "fatigue Neighbors:\u003cbr\u003eDiabetes\u003cbr\u003eJaundice\u003cbr\u003eVaricose veins\u003cbr\u003ePneumonia\u003cbr\u003eTuberculosis\u003cbr\u003eHypoglycemia\u003cbr\u003eHypothyroidism\u003cbr\u003eCommon Cold\u003cbr\u003eChicken pox\u003cbr\u003eHyperthyroidism\u003cbr\u003eDengue\u003cbr\u003eBronchial Asthma\u003cbr\u003eHepatitis C\u003cbr\u003eHepatitis D\u003cbr\u003eHepatitis B\u003cbr\u003eHepatitis E\u003cbr\u003eTyphoid", "value": 17}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "Pneumonia", "label": "Pneumonia", "shape": "dot", "title": "Pneumonia Neighbors:\u003cbr\u003echest_pain\u003cbr\u003emalaise\u003cbr\u003esweating\u003cbr\u003erusty_sputum\u003cbr\u003efatigue\u003cbr\u003efast_heart_rate\u003cbr\u003echills\u003cbr\u003ehigh_fever\u003cbr\u003ebreathlessness\u003cbr\u003ephlegm\u003cbr\u003ecough", "value": 11}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "chest_pain", "label": "chest_pain", "shape": "dot", "title": "chest_pain Neighbors:\u003cbr\u003eHypertension\u003cbr\u003eGERD\u003cbr\u003ePneumonia\u003cbr\u003eHeart attack", "value": 4}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "irritability", "label": "irritability", "shape": "dot", "title": "irritability Neighbors:\u003cbr\u003eHypoglycemia\u003cbr\u003eMigraine\u003cbr\u003eHyperthyroidism", "value": 3}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "Common Cold", "label": "Common Cold", "shape": "dot", "title": "Common Cold Neighbors:\u003cbr\u003eheadache\u003cbr\u003eswelled_lymph_nodes\u003cbr\u003emalaise\u003cbr\u003ethroat_irritation\u003cbr\u003eredness_of_eyes\u003cbr\u003efatigue\u003cbr\u003ephlegm\u003cbr\u003echills\u003cbr\u003ehigh_fever\u003cbr\u003econtinuous_sneezing\u003cbr\u003ecough", "value": 11}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "continuous_sneezing", "label": "continuous_sneezing", "shape": "dot", "title": "continuous_sneezing Neighbors:\u003cbr\u003eAllergy\u003cbr\u003eCommon Cold", "value": 2}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "Paralysis (brain hemorrhage)", "label": "Paralysis (brain hemorrhage)", "shape": "dot", "title": "Paralysis (brain hemorrhage) Neighbors:\u003cbr\u003eheadache\u003cbr\u003evomiting\u003cbr\u003ealtered_sensorium\u003cbr\u003eweakness_of_one_body_side", "value": 4}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "Hepatitis B", "label": "Hepatitis B", "shape": "dot", "title": "Hepatitis B Neighbors:\u003cbr\u003eloss_of_appetite\u003cbr\u003eyellow_urine\u003cbr\u003eyellowish_skin\u003cbr\u003emalaise\u003cbr\u003eabdominal_pain\u003cbr\u003elethargy\u003cbr\u003eyellowing_of_eyes\u003cbr\u003efatigue\u003cbr\u003eitching\u003cbr\u003ereceiving_blood_transfusion\u003cbr\u003edark_urine", "value": 11}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "Hyperthyroidism", "label": "Hyperthyroidism", "shape": "dot", "title": "Hyperthyroidism Neighbors:\u003cbr\u003eabnormal_menstruation\u003cbr\u003ediarrhoea\u003cbr\u003eweight_loss\u003cbr\u003esweating\u003cbr\u003erestlessness\u003cbr\u003eirritability\u003cbr\u003eexcessive_hunger\u003cbr\u003emuscle_weakness\u003cbr\u003efast_heart_rate\u003cbr\u003efatigue\u003cbr\u003emood_swings", "value": 11}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "Hepatitis D", "label": "Hepatitis D", "shape": "dot", "title": "Hepatitis D Neighbors:\u003cbr\u003eloss_of_appetite\u003cbr\u003eyellowish_skin\u003cbr\u003eabdominal_pain\u003cbr\u003eyellowing_of_eyes\u003cbr\u003evomiting\u003cbr\u003efatigue\u003cbr\u003enausea\u003cbr\u003ejoint_pain\u003cbr\u003edark_urine", "value": 9}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "yellowing_of_eyes", "label": "yellowing_of_eyes", "shape": "dot", "title": "yellowing_of_eyes Neighbors:\u003cbr\u003eTuberculosis\u003cbr\u003eChronic cholestasis\u003cbr\u003ehepatitis A\u003cbr\u003eHepatitis D\u003cbr\u003eHepatitis C\u003cbr\u003eHepatitis B\u003cbr\u003eHepatitis E", "value": 7}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "hepatitis A", "label": "hepatitis A", "shape": "dot", "title": "hepatitis A Neighbors:\u003cbr\u003eloss_of_appetite\u003cbr\u003emuscle_pain\u003cbr\u003eyellowish_skin\u003cbr\u003ediarrhoea\u003cbr\u003eabdominal_pain\u003cbr\u003eyellowing_of_eyes\u003cbr\u003emild_fever\u003cbr\u003evomiting\u003cbr\u003enausea\u003cbr\u003ejoint_pain\u003cbr\u003edark_urine", "value": 11}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "diarrhoea", "label": "diarrhoea", "shape": "dot", "title": "diarrhoea Neighbors:\u003cbr\u003ehepatitis A\u003cbr\u003eMalaria\u003cbr\u003eGastroenteritis\u003cbr\u003eHyperthyroidism\u003cbr\u003eTyphoid", "value": 5}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "Diabetes", "label": "Diabetes", "shape": "dot", "title": "Diabetes Neighbors:\u003cbr\u003epolyuria\u003cbr\u003eblurred_and_distorted_vision\u003cbr\u003eincreased_appetite\u003cbr\u003eweight_loss\u003cbr\u003eirregular_sugar_level\u003cbr\u003elethargy\u003cbr\u003eobesity\u003cbr\u003erestlessness\u003cbr\u003eexcessive_hunger\u003cbr\u003efatigue", "value": 10}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "irregular_sugar_level", "label": "irregular_sugar_level", "shape": "dot", "title": "irregular_sugar_level Neighbors:\u003cbr\u003eDiabetes", "value": 1}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "Migraine", "label": "Migraine", "shape": "dot", "title": "Migraine Neighbors:\u003cbr\u003eheadache\u003cbr\u003eblurred_and_distorted_vision\u003cbr\u003edepression\u003cbr\u003eirritability\u003cbr\u003eacidity\u003cbr\u003estiff_neck\u003cbr\u003eexcessive_hunger\u003cbr\u003eindigestion\u003cbr\u003evisual_disturbances", "value": 9}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "Impetigo", "label": "Impetigo", "shape": "dot", "title": "Impetigo Neighbors:\u003cbr\u003eblister\u003cbr\u003ered_sore_around_nose\u003cbr\u003eyellow_crust_ooze\u003cbr\u003ehigh_fever\u003cbr\u003eskin_rash", "value": 5}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "skin_rash", "label": "skin_rash", "shape": "dot", "title": "skin_rash Neighbors:\u003cbr\u003ePsoriasis\u003cbr\u003eChicken pox\u003cbr\u003eDengue\u003cbr\u003eAcne\u003cbr\u003eFungal infection\u003cbr\u003eImpetigo\u003cbr\u003eDrug Reaction", "value": 7}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "high_fever", "label": "high_fever", "shape": "dot", "title": "high_fever Neighbors:\u003cbr\u003eJaundice\u003cbr\u003eImpetigo\u003cbr\u003ePneumonia\u003cbr\u003eTuberculosis\u003cbr\u003eMalaria\u003cbr\u003eBronchial Asthma\u003cbr\u003eChicken pox\u003cbr\u003eAIDS\u003cbr\u003eDengue\u003cbr\u003eHepatitis E\u003cbr\u003eCommon Cold\u003cbr\u003eTyphoid", "value": 12}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "itching", "label": "itching", "shape": "dot", "title": "itching Neighbors:\u003cbr\u003eJaundice\u003cbr\u003eChronic cholestasis\u003cbr\u003eChicken pox\u003cbr\u003eHepatitis B\u003cbr\u003eFungal infection\u003cbr\u003eDrug Reaction", "value": 6}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "Dimorphic hemmorhoids(piles)", "label": "Dimorphic hemmorhoids(piles)", "shape": "dot", "title": "Dimorphic hemmorhoids(piles) Neighbors:\u003cbr\u003epain_in_anal_region\u003cbr\u003econstipation\u003cbr\u003epain_during_bowel_movements\u003cbr\u003eirritation_in_anus\u003cbr\u003ebloody_stool", "value": 5}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "pain_in_anal_region", "label": "pain_in_anal_region", "shape": "dot", "title": "pain_in_anal_region Neighbors:\u003cbr\u003eDimorphic hemmorhoids(piles)", "value": 1}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "AIDS", "label": "AIDS", "shape": "dot", "title": "AIDS Neighbors:\u003cbr\u003ehigh_fever\u003cbr\u003emuscle_wasting\u003cbr\u003epatches_in_throat\u003cbr\u003eextra_marital_contacts", "value": 4}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "muscle_wasting", "label": "muscle_wasting", "shape": "dot", "title": "muscle_wasting Neighbors:\u003cbr\u003eAIDS", "value": 1}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "Drug Reaction", "label": "Drug Reaction", "shape": "dot", "title": "Drug Reaction Neighbors:\u003cbr\u003estomach_pain\u003cbr\u003eburning_micturition\u003cbr\u003eitching\u003cbr\u003eskin_rash", "value": 4}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "Fungal infection", "label": "Fungal infection", "shape": "dot", "title": "Fungal infection Neighbors:\u003cbr\u003eitching\u003cbr\u003eskin_rash\u003cbr\u003enodal_skin_eruptions", "value": 3}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "Alcoholic hepatitis", "label": "Alcoholic hepatitis", "shape": "dot", "title": "Alcoholic hepatitis Neighbors:\u003cbr\u003eyellowish_skin\u003cbr\u003eabdominal_pain\u003cbr\u003evomiting\u003cbr\u003ehistory_of_alcohol_consumption\u003cbr\u003eswelling_of_stomach\u003cbr\u003edistention_of_abdomen\u003cbr\u003efluid_overload", "value": 7}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "distention_of_abdomen", "label": "distention_of_abdomen", "shape": "dot", "title": "distention_of_abdomen Neighbors:\u003cbr\u003eAlcoholic hepatitis", "value": 1}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "Heart attack", "label": "Heart attack", "shape": "dot", "title": "Heart attack Neighbors:\u003cbr\u003ebreathlessness\u003cbr\u003evomiting\u003cbr\u003echest_pain\u003cbr\u003esweating", "value": 4}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "family_history", "label": "family_history", "shape": "dot", "title": "family_history Neighbors:\u003cbr\u003eHepatitis C\u003cbr\u003eBronchial Asthma", "value": 2}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "weakness_of_one_body_side", "label": "weakness_of_one_body_side", "shape": "dot", "title": "weakness_of_one_body_side Neighbors:\u003cbr\u003eParalysis (brain hemorrhage)", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "silver_like_dusting", "label": "silver_like_dusting", "shape": "dot", "title": "silver_like_dusting Neighbors:\u003cbr\u003ePsoriasis", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "visual_disturbances", "label": "visual_disturbances", "shape": "dot", "title": "visual_disturbances Neighbors:\u003cbr\u003eMigraine", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "mild_fever", "label": "mild_fever", "shape": "dot", "title": "mild_fever Neighbors:\u003cbr\u003eChicken pox\u003cbr\u003ehepatitis A\u003cbr\u003eTuberculosis", "value": 3}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "Hepatitis E", "label": "Hepatitis E", "shape": "dot", "title": "Hepatitis E Neighbors:\u003cbr\u003eloss_of_appetite\u003cbr\u003eyellowish_skin\u003cbr\u003eabdominal_pain\u003cbr\u003eyellowing_of_eyes\u003cbr\u003efatigue\u003cbr\u003evomiting\u003cbr\u003enausea\u003cbr\u003ejoint_pain\u003cbr\u003ehigh_fever\u003cbr\u003eacute_liver_failure\u003cbr\u003edark_urine", "value": 11}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "yellowish_skin", "label": "yellowish_skin", "shape": "dot", "title": "yellowish_skin Neighbors:\u003cbr\u003eAlcoholic hepatitis\u003cbr\u003eJaundice\u003cbr\u003eChronic cholestasis\u003cbr\u003ehepatitis A\u003cbr\u003eHepatitis D\u003cbr\u003eHepatitis C\u003cbr\u003eHepatitis B\u003cbr\u003eHepatitis E", "value": 8}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "constipation", "label": "constipation", "shape": "dot", "title": "constipation Neighbors:\u003cbr\u003eTyphoid\u003cbr\u003eDimorphic hemmorhoids(piles)", "value": 2}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "blurred_and_distorted_vision", "label": "blurred_and_distorted_vision", "shape": "dot", "title": "blurred_and_distorted_vision Neighbors:\u003cbr\u003eHypoglycemia\u003cbr\u003eMigraine\u003cbr\u003eDiabetes", "value": 3}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "polyuria", "label": "polyuria", "shape": "dot", "title": "polyuria Neighbors:\u003cbr\u003eDiabetes", "value": 1}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "Malaria", "label": "Malaria", "shape": "dot", "title": "Malaria Neighbors:\u003cbr\u003emuscle_pain\u003cbr\u003eheadache\u003cbr\u003ediarrhoea\u003cbr\u003esweating\u003cbr\u003evomiting\u003cbr\u003enausea\u003cbr\u003echills\u003cbr\u003ehigh_fever", "value": 8}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "chills", "label": "chills", "shape": "dot", "title": "chills Neighbors:\u003cbr\u003eAllergy\u003cbr\u003ePneumonia\u003cbr\u003eTuberculosis\u003cbr\u003eMalaria\u003cbr\u003eDengue\u003cbr\u003eCommon Cold\u003cbr\u003eTyphoid", "value": 7}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "headache", "label": "headache", "shape": "dot", "title": "headache Neighbors:\u003cbr\u003eMigraine\u003cbr\u003eHypertension\u003cbr\u003e(vertigo) Paroymsal  Positional Vertigo\u003cbr\u003eHypoglycemia\u003cbr\u003eMalaria\u003cbr\u003eChicken pox\u003cbr\u003eDengue\u003cbr\u003eCommon Cold\u003cbr\u003eTyphoid\u003cbr\u003eParalysis (brain hemorrhage)", "value": 10}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "stomach_pain", "label": "stomach_pain", "shape": "dot", "title": "stomach_pain Neighbors:\u003cbr\u003eGERD\u003cbr\u003eDrug Reaction", "value": 2}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "neck_pain", "label": "neck_pain", "shape": "dot", "title": "neck_pain Neighbors:\u003cbr\u003eOsteoarthristis\u003cbr\u003eCervical spondylosis", "value": 2}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "Gastroenteritis", "label": "Gastroenteritis", "shape": "dot", "title": "Gastroenteritis Neighbors:\u003cbr\u003esunken_eyes\u003cbr\u003evomiting\u003cbr\u003ediarrhoea\u003cbr\u003edehydration", "value": 4}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "sunken_eyes", "label": "sunken_eyes", "shape": "dot", "title": "sunken_eyes Neighbors:\u003cbr\u003eGastroenteritis", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "blister", "label": "blister", "shape": "dot", "title": "blister Neighbors:\u003cbr\u003eImpetigo", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "dark_urine", "label": "dark_urine", "shape": "dot", "title": "dark_urine Neighbors:\u003cbr\u003eJaundice\u003cbr\u003ehepatitis A\u003cbr\u003eHepatitis D\u003cbr\u003eHepatitis B\u003cbr\u003eHepatitis E", "value": 5}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "patches_in_throat", "label": "patches_in_throat", "shape": "dot", "title": "patches_in_throat Neighbors:\u003cbr\u003eAIDS", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "throat_irritation", "label": "throat_irritation", "shape": "dot", "title": "throat_irritation Neighbors:\u003cbr\u003eCommon Cold", "value": 1}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "Hepatitis C", "label": "Hepatitis C", "shape": "dot", "title": "Hepatitis C Neighbors:\u003cbr\u003eloss_of_appetite\u003cbr\u003eyellowish_skin\u003cbr\u003eyellowing_of_eyes\u003cbr\u003efamily_history\u003cbr\u003efatigue\u003cbr\u003enausea", "value": 6}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "burning_micturition", "label": "burning_micturition", "shape": "dot", "title": "burning_micturition Neighbors:\u003cbr\u003eUrinary tract infection\u003cbr\u003eDrug Reaction", "value": 2}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "GERD", "label": "GERD", "shape": "dot", "title": "GERD Neighbors:\u003cbr\u003estomach_pain\u003cbr\u003echest_pain\u003cbr\u003eacidity\u003cbr\u003eulcers_on_tongue\u003cbr\u003evomiting\u003cbr\u003ecough", "value": 6}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "obesity", "label": "obesity", "shape": "dot", "title": "obesity Neighbors:\u003cbr\u003eVaricose veins\u003cbr\u003eDiabetes", "value": 2}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "joint_pain", "label": "joint_pain", "shape": "dot", "title": "joint_pain Neighbors:\u003cbr\u003ehepatitis A\u003cbr\u003ePsoriasis\u003cbr\u003eHepatitis D\u003cbr\u003eDengue\u003cbr\u003eOsteoarthristis\u003cbr\u003eHepatitis E", "value": 6}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "Typhoid", "label": "Typhoid", "shape": "dot", "title": "Typhoid Neighbors:\u003cbr\u003eheadache\u003cbr\u003ebelly_pain\u003cbr\u003ediarrhoea\u003cbr\u003eabdominal_pain\u003cbr\u003econstipation\u003cbr\u003efatigue\u003cbr\u003evomiting\u003cbr\u003enausea\u003cbr\u003etoxic_look_(typhos)\u003cbr\u003echills\u003cbr\u003ehigh_fever", "value": 11}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "phlegm", "label": "phlegm", "shape": "dot", "title": "phlegm Neighbors:\u003cbr\u003eCommon Cold\u003cbr\u003ePneumonia", "value": 2}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "belly_pain", "label": "belly_pain", "shape": "dot", "title": "belly_pain Neighbors:\u003cbr\u003eTyphoid", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "malaise", "label": "malaise", "shape": "dot", "title": "malaise Neighbors:\u003cbr\u003eChicken pox\u003cbr\u003eCommon Cold\u003cbr\u003ePneumonia\u003cbr\u003eHepatitis B", "value": 4}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "lethargy", "label": "lethargy", "shape": "dot", "title": "lethargy Neighbors:\u003cbr\u003eChicken pox\u003cbr\u003eDiabetes\u003cbr\u003eHepatitis B\u003cbr\u003eHypothyroidism", "value": 4}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "Urinary tract infection", "label": "Urinary tract infection", "shape": "dot", "title": "Urinary tract infection Neighbors:\u003cbr\u003eburning_micturition\u003cbr\u003ebladder_discomfort\u003cbr\u003econtinuous_feel_of_urine", "value": 3}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "bladder_discomfort", "label": "bladder_discomfort", "shape": "dot", "title": "bladder_discomfort Neighbors:\u003cbr\u003eUrinary tract infection", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "fluid_overload", "label": "fluid_overload", "shape": "dot", "title": "fluid_overload Neighbors:\u003cbr\u003eAlcoholic hepatitis", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "slurred_speech", "label": "slurred_speech", "shape": "dot", "title": "slurred_speech Neighbors:\u003cbr\u003eHypoglycemia", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "nausea", "label": "nausea", "shape": "dot", "title": "nausea Neighbors:\u003cbr\u003e(vertigo) Paroymsal  Positional Vertigo\u003cbr\u003eHypoglycemia\u003cbr\u003ehepatitis A\u003cbr\u003eChronic cholestasis\u003cbr\u003eMalaria\u003cbr\u003eHepatitis D\u003cbr\u003eDengue\u003cbr\u003eHepatitis C\u003cbr\u003eHepatitis E\u003cbr\u003eTyphoid", "value": 10}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "loss_of_balance", "label": "loss_of_balance", "shape": "dot", "title": "loss_of_balance Neighbors:\u003cbr\u003eHypertension\u003cbr\u003eCervical spondylosis\u003cbr\u003e(vertigo) Paroymsal  Positional Vertigo", "value": 3}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "increased_appetite", "label": "increased_appetite", "shape": "dot", "title": "increased_appetite Neighbors:\u003cbr\u003eDiabetes", "value": 1}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "Osteoarthristis", "label": "Osteoarthristis", "shape": "dot", "title": "Osteoarthristis Neighbors:\u003cbr\u003eneck_pain\u003cbr\u003eswelling_joints\u003cbr\u003ehip_joint_pain\u003cbr\u003ejoint_pain\u003cbr\u003eknee_pain\u003cbr\u003epainful_walking", "value": 6}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "hip_joint_pain", "label": "hip_joint_pain", "shape": "dot", "title": "hip_joint_pain Neighbors:\u003cbr\u003eOsteoarthristis", "value": 1}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "Allergy", "label": "Allergy", "shape": "dot", "title": "Allergy Neighbors:\u003cbr\u003ewatering_from_eyes\u003cbr\u003echills\u003cbr\u003econtinuous_sneezing\u003cbr\u003eshivering", "value": 4}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "mucoid_sputum", "label": "mucoid_sputum", "shape": "dot", "title": "mucoid_sputum Neighbors:\u003cbr\u003eBronchial Asthma", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "extra_marital_contacts", "label": "extra_marital_contacts", "shape": "dot", "title": "extra_marital_contacts Neighbors:\u003cbr\u003eAIDS", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "passage_of_gases", "label": "passage_of_gases", "shape": "dot", "title": "passage_of_gases Neighbors:\u003cbr\u003ePeptic ulcer diseae", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "nodal_skin_eruptions", "label": "nodal_skin_eruptions", "shape": "dot", "title": "nodal_skin_eruptions Neighbors:\u003cbr\u003eFungal infection", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "back_pain", "label": "back_pain", "shape": "dot", "title": "back_pain Neighbors:\u003cbr\u003eDengue\u003cbr\u003eCervical spondylosis", "value": 2}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "Hypothyroidism", "label": "Hypothyroidism", "shape": "dot", "title": "Hypothyroidism Neighbors:\u003cbr\u003eweight_gain\u003cbr\u003ecold_hands_and_feets\u003cbr\u003elethargy\u003cbr\u003ebrittle_nails\u003cbr\u003edepression\u003cbr\u003eswollen_extremeties\u003cbr\u003epuffy_face_and_eyes\u003cbr\u003efatigue\u003cbr\u003emood_swings\u003cbr\u003edizziness\u003cbr\u003eenlarged_thyroid", "value": 11}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "mood_swings", "label": "mood_swings", "shape": "dot", "title": "mood_swings Neighbors:\u003cbr\u003eHyperthyroidism\u003cbr\u003eHypothyroidism", "value": 2}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "redness_of_eyes", "label": "redness_of_eyes", "shape": "dot", "title": "redness_of_eyes Neighbors:\u003cbr\u003eCommon Cold", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "depression", "label": "depression", "shape": "dot", "title": "depression Neighbors:\u003cbr\u003eMigraine\u003cbr\u003eHypothyroidism", "value": 2}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "bloody_stool", "label": "bloody_stool", "shape": "dot", "title": "bloody_stool Neighbors:\u003cbr\u003eDimorphic hemmorhoids(piles)", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "ulcers_on_tongue", "label": "ulcers_on_tongue", "shape": "dot", "title": "ulcers_on_tongue Neighbors:\u003cbr\u003eGERD", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "indigestion", "label": "indigestion", "shape": "dot", "title": "indigestion Neighbors:\u003cbr\u003ePeptic ulcer diseae\u003cbr\u003eMigraine", "value": 2}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "acidity", "label": "acidity", "shape": "dot", "title": "acidity Neighbors:\u003cbr\u003eMigraine\u003cbr\u003eGERD", "value": 2}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "Acne", "label": "Acne", "shape": "dot", "title": "Acne Neighbors:\u003cbr\u003escurring\u003cbr\u003epus_filled_pimples\u003cbr\u003eblackheads\u003cbr\u003eskin_rash", "value": 4}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "blackheads", "label": "blackheads", "shape": "dot", "title": "blackheads Neighbors:\u003cbr\u003eAcne", "value": 1}, {"color": "#F46223", "font": {"color": "#232333"}, "id": "Hypertension", "label": "Hypertension", "shape": "dot", "title": "Hypertension Neighbors:\u003cbr\u003elack_of_concentration\u003cbr\u003eheadache\u003cbr\u003echest_pain\u003cbr\u003eloss_of_balance\u003cbr\u003edizziness", "value": 5}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "restlessness", "label": "restlessness", "shape": "dot", "title": "restlessness Neighbors:\u003cbr\u003eDiabetes\u003cbr\u003eHyperthyroidism", "value": 2}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "spinning_movements", "label": "spinning_movements", "shape": "dot", "title": "spinning_movements Neighbors:\u003cbr\u003e(vertigo) Paroymsal  Positional Vertigo", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "toxic_look_(typhos)", "label": "toxic_look_(typhos)", "shape": "dot", "title": "toxic_look_(typhos) Neighbors:\u003cbr\u003eTyphoid", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "muscle_pain", "label": "muscle_pain", "shape": "dot", "title": "muscle_pain Neighbors:\u003cbr\u003ehepatitis A\u003cbr\u003eMalaria", "value": 2}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "swelling_of_stomach", "label": "swelling_of_stomach", "shape": "dot", "title": "swelling_of_stomach Neighbors:\u003cbr\u003eAlcoholic hepatitis", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "skin_peeling", "label": "skin_peeling", "shape": "dot", "title": "skin_peeling Neighbors:\u003cbr\u003ePsoriasis", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "altered_sensorium", "label": "altered_sensorium", "shape": "dot", "title": "altered_sensorium Neighbors:\u003cbr\u003eParalysis (brain hemorrhage)", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "painful_walking", "label": "painful_walking", "shape": "dot", "title": "painful_walking Neighbors:\u003cbr\u003eOsteoarthristis\u003cbr\u003eArthritis", "value": 2}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "stiff_neck", "label": "stiff_neck", "shape": "dot", "title": "stiff_neck Neighbors:\u003cbr\u003eMigraine\u003cbr\u003eArthritis", "value": 2}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "brittle_nails", "label": "brittle_nails", "shape": "dot", "title": "brittle_nails Neighbors:\u003cbr\u003eHypothyroidism", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "red_spots_over_body", "label": "red_spots_over_body", "shape": "dot", "title": "red_spots_over_body Neighbors:\u003cbr\u003eChicken pox", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "unsteadiness", "label": "unsteadiness", "shape": "dot", "title": "unsteadiness Neighbors:\u003cbr\u003e(vertigo) Paroymsal  Positional Vertigo", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "cramps", "label": "cramps", "shape": "dot", "title": "cramps Neighbors:\u003cbr\u003eVaricose veins", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "bruising", "label": "bruising", "shape": "dot", "title": "bruising Neighbors:\u003cbr\u003eVaricose veins", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "puffy_face_and_eyes", "label": "puffy_face_and_eyes", "shape": "dot", "title": "puffy_face_and_eyes Neighbors:\u003cbr\u003eHypothyroidism", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "movement_stiffness", "label": "movement_stiffness", "shape": "dot", "title": "movement_stiffness Neighbors:\u003cbr\u003eArthritis", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "yellow_urine", "label": "yellow_urine", "shape": "dot", "title": "yellow_urine Neighbors:\u003cbr\u003eHepatitis B", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "dehydration", "label": "dehydration", "shape": "dot", "title": "dehydration Neighbors:\u003cbr\u003eGastroenteritis", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "fast_heart_rate", "label": "fast_heart_rate", "shape": "dot", "title": "fast_heart_rate Neighbors:\u003cbr\u003ePneumonia\u003cbr\u003eHyperthyroidism", "value": 2}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "history_of_alcohol_consumption", "label": "history_of_alcohol_consumption", "shape": "dot", "title": "history_of_alcohol_consumption Neighbors:\u003cbr\u003eAlcoholic hepatitis", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "abnormal_menstruation", "label": "abnormal_menstruation", "shape": "dot", "title": "abnormal_menstruation Neighbors:\u003cbr\u003eHyperthyroidism", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "small_dents_in_nails", "label": "small_dents_in_nails", "shape": "dot", "title": "small_dents_in_nails Neighbors:\u003cbr\u003ePsoriasis", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "muscle_weakness", "label": "muscle_weakness", "shape": "dot", "title": "muscle_weakness Neighbors:\u003cbr\u003eArthritis\u003cbr\u003eHyperthyroidism", "value": 2}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "anxiety", "label": "anxiety", "shape": "dot", "title": "anxiety Neighbors:\u003cbr\u003eHypoglycemia", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "watering_from_eyes", "label": "watering_from_eyes", "shape": "dot", "title": "watering_from_eyes Neighbors:\u003cbr\u003eAllergy", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "continuous_feel_of_urine", "label": "continuous_feel_of_urine", "shape": "dot", "title": "continuous_feel_of_urine Neighbors:\u003cbr\u003eUrinary tract infection", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "enlarged_thyroid", "label": "enlarged_thyroid", "shape": "dot", "title": "enlarged_thyroid Neighbors:\u003cbr\u003eHypothyroidism", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "knee_pain", "label": "knee_pain", "shape": "dot", "title": "knee_pain Neighbors:\u003cbr\u003eOsteoarthristis", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "dizziness", "label": "dizziness", "shape": "dot", "title": "dizziness Neighbors:\u003cbr\u003eHypertension\u003cbr\u003eCervical spondylosis\u003cbr\u003eHypothyroidism", "value": 3}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "weight_gain", "label": "weight_gain", "shape": "dot", "title": "weight_gain Neighbors:\u003cbr\u003eHypothyroidism", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "swollen_blood_vessels", "label": "swollen_blood_vessels", "shape": "dot", "title": "swollen_blood_vessels Neighbors:\u003cbr\u003eVaricose veins", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "lack_of_concentration", "label": "lack_of_concentration", "shape": "dot", "title": "lack_of_concentration Neighbors:\u003cbr\u003eHypertension", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "yellow_crust_ooze", "label": "yellow_crust_ooze", "shape": "dot", "title": "yellow_crust_ooze Neighbors:\u003cbr\u003eImpetigo", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "pain_during_bowel_movements", "label": "pain_during_bowel_movements", "shape": "dot", "title": "pain_during_bowel_movements Neighbors:\u003cbr\u003eDimorphic hemmorhoids(piles)", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "irritation_in_anus", "label": "irritation_in_anus", "shape": "dot", "title": "irritation_in_anus Neighbors:\u003cbr\u003eDimorphic hemmorhoids(piles)", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "scurring", "label": "scurring", "shape": "dot", "title": "scurring Neighbors:\u003cbr\u003eAcne", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "swollen_extremeties", "label": "swollen_extremeties", "shape": "dot", "title": "swollen_extremeties Neighbors:\u003cbr\u003eHypothyroidism", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "cold_hands_and_feets", "label": "cold_hands_and_feets", "shape": "dot", "title": "cold_hands_and_feets Neighbors:\u003cbr\u003eHypothyroidism", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "drying_and_tingling_lips", "label": "drying_and_tingling_lips", "shape": "dot", "title": "drying_and_tingling_lips Neighbors:\u003cbr\u003eHypoglycemia", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "rusty_sputum", "label": "rusty_sputum", "shape": "dot", "title": "rusty_sputum Neighbors:\u003cbr\u003ePneumonia", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "prominent_veins_on_calf", "label": "prominent_veins_on_calf", "shape": "dot", "title": "prominent_veins_on_calf Neighbors:\u003cbr\u003eVaricose veins", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "red_sore_around_nose", "label": "red_sore_around_nose", "shape": "dot", "title": "red_sore_around_nose Neighbors:\u003cbr\u003eImpetigo", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "internal_itching", "label": "internal_itching", "shape": "dot", "title": "internal_itching Neighbors:\u003cbr\u003ePeptic ulcer diseae", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "acute_liver_failure", "label": "acute_liver_failure", "shape": "dot", "title": "acute_liver_failure Neighbors:\u003cbr\u003eHepatitis E", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "pus_filled_pimples", "label": "pus_filled_pimples", "shape": "dot", "title": "pus_filled_pimples Neighbors:\u003cbr\u003eAcne", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "receiving_blood_transfusion", "label": "receiving_blood_transfusion", "shape": "dot", "title": "receiving_blood_transfusion Neighbors:\u003cbr\u003eHepatitis B", "value": 1}, {"color": "#F4D823", "font": {"color": "#232333"}, "id": "shivering", "label": "shivering", "shape": "dot", "title": "shivering Neighbors:\u003cbr\u003eAllergy", "value": 1}]);
+                  edges = new vis.DataSet([{"color": "#E8E8E8", "from": "Dengue", "to": "pain_behind_the_eyes", "value": 4}, {"color": "#E8E8E8", "from": "Peptic ulcer diseae", "to": "loss_of_appetite", "value": 4}, {"color": "#E8E8E8", "from": "Chronic cholestasis", "to": "vomiting", "value": 5}, {"color": "#E8E8E8", "from": "Bronchial Asthma", "to": "cough", "value": 4}, {"color": "#E8E8E8", "from": "Varicose veins", "to": "swollen_legs", "value": 5}, {"color": "#E8E8E8", "from": "Jaundice", "to": "weight_loss", "value": 3}, {"color": "#E8E8E8", "from": "Hypoglycemia", "to": "excessive_hunger", "value": 4}, {"color": "#E8E8E8", "from": "Chronic cholestasis", "to": "abdominal_pain", "value": 4}, {"color": "#E8E8E8", "from": "Psoriasis", "to": "inflammatory_nails", "value": 2}, {"color": "#E8E8E8", "from": "Cervical spondylosis", "to": "weakness_in_limbs", "value": 7}, {"color": "#E8E8E8", "from": "Bronchial Asthma", "to": "breathlessness", "value": 4}, {"color": "#E8E8E8", "from": "(vertigo) Paroymsal  Positional Vertigo", "to": "vomiting", "value": 5}, {"color": "#E8E8E8", "from": "Chicken pox", "to": "swelled_lymph_nodes", "value": 6}, {"color": "#E8E8E8", "from": "Arthritis", "to": "swelling_joints", "value": 5}, {"color": "#E8E8E8", "from": "Tuberculosis", "to": "sweating", "value": 3}, {"color": "#E8E8E8", "from": "Tuberculosis", "to": "vomiting", "value": 5}, {"color": "#E8E8E8", "from": "Dengue", "to": "fatigue", "value": 4}, {"color": "#E8E8E8", "from": "Pneumonia", "to": "chest_pain", "value": 7}, {"color": "#E8E8E8", "from": "Hypoglycemia", "to": "irritability", "value": 2}, {"color": "#E8E8E8", "from": "Common Cold", "to": "continuous_sneezing", "value": 4}, {"color": "#E8E8E8", "from": "Paralysis (brain hemorrhage)", "to": "vomiting", "value": 5}, {"color": "#E8E8E8", "from": "Hepatitis B", "to": "abdominal_pain", "value": 4}, {"color": "#E8E8E8", "from": "Hyperthyroidism", "to": "weight_loss", "value": 3}, {"color": "#E8E8E8", "from": "Hepatitis D", "to": "yellowing_of_eyes", "value": 4}, {"color": "#E8E8E8", "from": "hepatitis A", "to": "diarrhoea", "value": 6}, {"color": "#E8E8E8", "from": "Diabetes", "to": "irregular_sugar_level", "value": 5}, {"color": "#E8E8E8", "from": "Migraine", "to": "excessive_hunger", "value": 4}, {"color": "#E8E8E8", "from": "Impetigo", "to": "skin_rash", "value": 3}, {"color": "#E8E8E8", "from": "Jaundice", "to": "high_fever", "value": 7}, {"color": "#E8E8E8", "from": "Chronic cholestasis", "to": "yellowing_of_eyes", "value": 4}, {"color": "#E8E8E8", "from": "Hepatitis D", "to": "loss_of_appetite", "value": 4}, {"color": "#E8E8E8", "from": "Chronic cholestasis", "to": "itching", "value": 1}, {"color": "#E8E8E8", "from": "Hepatitis D", "to": "vomiting", "value": 5}, {"color": "#E8E8E8", "from": "Dimorphic hemmorhoids(piles)", "to": "pain_in_anal_region", "value": 6}, {"color": "#E8E8E8", "from": "AIDS", "to": "muscle_wasting", "value": 3}, {"color": "#E8E8E8", "from": "Diabetes", "to": "weight_loss", "value": 3}, {"color": "#E8E8E8", "from": "Drug Reaction", "to": "itching", "value": 1}, {"color": "#E8E8E8", "from": "Fungal infection", "to": "skin_rash", "value": 3}, {"color": "#E8E8E8", "from": "Alcoholic hepatitis", "to": "distention_of_abdomen", "value": 4}, {"color": "#E8E8E8", "from": "Heart attack", "to": "chest_pain", "value": 7}, {"color": "#E8E8E8", "from": "Bronchial Asthma", "to": "family_history", "value": 5}, {"color": "#E8E8E8", "from": "Chicken pox", "to": "itching", "value": 1}, {"color": "#E8E8E8", "from": "Paralysis (brain hemorrhage)", "to": "weakness_of_one_body_side", "value": 4}, {"color": "#E8E8E8", "from": "Psoriasis", "to": "silver_like_dusting", "value": 2}, {"color": "#E8E8E8", "from": "Migraine", "to": "visual_disturbances", "value": 3}, {"color": "#E8E8E8", "from": "hepatitis A", "to": "mild_fever", "value": 5}, {"color": "#E8E8E8", "from": "hepatitis A", "to": "vomiting", "value": 5}, {"color": "#E8E8E8", "from": "Hepatitis E", "to": "yellowish_skin", "value": 3}, {"color": "#E8E8E8", "from": "Heart attack", "to": "sweating", "value": 3}, {"color": "#E8E8E8", "from": "Tuberculosis", "to": "loss_of_appetite", "value": 4}, {"color": "#E8E8E8", "from": "Chronic cholestasis", "to": "loss_of_appetite", "value": 4}, {"color": "#E8E8E8", "from": "Dimorphic hemmorhoids(piles)", "to": "constipation", "value": 4}, {"color": "#E8E8E8", "from": "Chicken pox", "to": "loss_of_appetite", "value": 4}, {"color": "#E8E8E8", "from": "Hypoglycemia", "to": "blurred_and_distorted_vision", "value": 5}, {"color": "#E8E8E8", "from": "Diabetes", "to": "polyuria", "value": 4}, {"color": "#E8E8E8", "from": "Pneumonia", "to": "high_fever", "value": 7}, {"color": "#E8E8E8", "from": "Malaria", "to": "chills", "value": 3}, {"color": "#E8E8E8", "from": "Malaria", "to": "sweating", "value": 3}, {"color": "#E8E8E8", "from": "Dengue", "to": "headache", "value": 3}, {"color": "#E8E8E8", "from": "Hypoglycemia", "to": "sweating", "value": 3}, {"color": "#E8E8E8", "from": "Drug Reaction", "to": "stomach_pain", "value": 5}, {"color": "#E8E8E8", "from": "Cervical spondylosis", "to": "neck_pain", "value": 5}, {"color": "#E8E8E8", "from": "Chicken pox", "to": "headache", "value": 3}, {"color": "#E8E8E8", "from": "Gastroenteritis", "to": "sunken_eyes", "value": 3}, {"color": "#E8E8E8", "from": "Impetigo", "to": "blister", "value": 4}, {"color": "#E8E8E8", "from": "Hepatitis B", "to": "loss_of_appetite", "value": 4}, {"color": "#E8E8E8", "from": "Jaundice", "to": "dark_urine", "value": 4}, {"color": "#E8E8E8", "from": "AIDS", "to": "patches_in_throat", "value": 6}, {"color": "#E8E8E8", "from": "Jaundice", "to": "abdominal_pain", "value": 4}, {"color": "#E8E8E8", "from": "Dengue", "to": "vomiting", "value": 5}, {"color": "#E8E8E8", "from": "Common Cold", "to": "throat_irritation", "value": 4}, {"color": "#E8E8E8", "from": "Gastroenteritis", "to": "vomiting", "value": 5}, {"color": "#E8E8E8", "from": "Hepatitis C", "to": "yellowing_of_eyes", "value": 4}, {"color": "#E8E8E8", "from": "Drug Reaction", "to": "burning_micturition", "value": 6}, {"color": "#E8E8E8", "from": "GERD", "to": "chest_pain", "value": 7}, {"color": "#E8E8E8", "from": "Varicose veins", "to": "obesity", "value": 4}, {"color": "#E8E8E8", "from": "Diabetes", "to": "excessive_hunger", "value": 4}, {"color": "#E8E8E8", "from": "hepatitis A", "to": "joint_pain", "value": 3}, {"color": "#E8E8E8", "from": "Typhoid", "to": "high_fever", "value": 7}, {"color": "#E8E8E8", "from": "Tuberculosis", "to": "chills", "value": 3}, {"color": "#E8E8E8", "from": "Bronchial Asthma", "to": "high_fever", "value": 7}, {"color": "#E8E8E8", "from": "Pneumonia", "to": "phlegm", "value": 5}, {"color": "#E8E8E8", "from": "Typhoid", "to": "belly_pain", "value": 4}, {"color": "#E8E8E8", "from": "Typhoid", "to": "fatigue", "value": 4}, {"color": "#E8E8E8", "from": "Malaria", "to": "high_fever", "value": 7}, {"color": "#E8E8E8", "from": "Common Cold", "to": "malaise", "value": 6}, {"color": "#E8E8E8", "from": "Diabetes", "to": "lethargy", "value": 2}, {"color": "#E8E8E8", "from": "Pneumonia", "to": "cough", "value": 4}, {"color": "#E8E8E8", "from": "Urinary tract infection", "to": "bladder_discomfort", "value": 4}, {"color": "#E8E8E8", "from": "Hepatitis C", "to": "loss_of_appetite", "value": 4}, {"color": "#E8E8E8", "from": "Tuberculosis", "to": "yellowing_of_eyes", "value": 4}, {"color": "#E8E8E8", "from": "Alcoholic hepatitis", "to": "fluid_overload", "value": 4}, {"color": "#E8E8E8", "from": "Hypoglycemia", "to": "slurred_speech", "value": 4}, {"color": "#E8E8E8", "from": "Malaria", "to": "vomiting", "value": 5}, {"color": "#E8E8E8", "from": "Typhoid", "to": "nausea", "value": 5}, {"color": "#E8E8E8", "from": "(vertigo) Paroymsal  Positional Vertigo", "to": "loss_of_balance", "value": 4}, {"color": "#E8E8E8", "from": "Common Cold", "to": "swelled_lymph_nodes", "value": 6}, {"color": "#E8E8E8", "from": "Jaundice", "to": "itching", "value": 1}, {"color": "#E8E8E8", "from": "Hypoglycemia", "to": "fatigue", "value": 4}, {"color": "#E8E8E8", "from": "Chicken pox", "to": "fatigue", "value": 4}, {"color": "#E8E8E8", "from": "Diabetes", "to": "increased_appetite", "value": 5}, {"color": "#E8E8E8", "from": "Osteoarthristis", "to": "hip_joint_pain", "value": 2}, {"color": "#E8E8E8", "from": "Malaria", "to": "diarrhoea", "value": 6}, {"color": "#E8E8E8", "from": "Hepatitis D", "to": "dark_urine", "value": 4}, {"color": "#E8E8E8", "from": "Allergy", "to": "continuous_sneezing", "value": 4}, {"color": "#E8E8E8", "from": "Tuberculosis", "to": "mild_fever", "value": 5}, {"color": "#E8E8E8", "from": "Bronchial Asthma", "to": "mucoid_sputum", "value": 4}, {"color": "#E8E8E8", "from": "Impetigo", "to": "high_fever", "value": 7}, {"color": "#E8E8E8", "from": "Hepatitis D", "to": "yellowish_skin", "value": 3}, {"color": "#E8E8E8", "from": "AIDS", "to": "extra_marital_contacts", "value": 5}, {"color": "#E8E8E8", "from": "Varicose veins", "to": "fatigue", "value": 4}, {"color": "#E8E8E8", "from": "Pneumonia", "to": "fatigue", "value": 4}, {"color": "#E8E8E8", "from": "Peptic ulcer diseae", "to": "passage_of_gases", "value": 5}, {"color": "#E8E8E8", "from": "Hepatitis D", "to": "nausea", "value": 5}, {"color": "#E8E8E8", "from": "Chicken pox", "to": "high_fever", "value": 7}, {"color": "#E8E8E8", "from": "Common Cold", "to": "high_fever", "value": 7}, {"color": "#E8E8E8", "from": "Hepatitis E", "to": "fatigue", "value": 4}, {"color": "#E8E8E8", "from": "Hepatitis E", "to": "yellowing_of_eyes", "value": 4}, {"color": "#E8E8E8", "from": "Common Cold", "to": "fatigue", "value": 4}, {"color": "#E8E8E8", "from": "Jaundice", "to": "yellowish_skin", "value": 3}, {"color": "#E8E8E8", "from": "Fungal infection", "to": "nodal_skin_eruptions", "value": 4}, {"color": "#E8E8E8", "from": "Cervical spondylosis", "to": "back_pain", "value": 3}, {"color": "#E8E8E8", "from": "Hypothyroidism", "to": "mood_swings", "value": 3}, {"color": "#E8E8E8", "from": "hepatitis A", "to": "nausea", "value": 5}, {"color": "#E8E8E8", "from": "Pneumonia", "to": "chills", "value": 3}, {"color": "#E8E8E8", "from": "Hepatitis E", "to": "dark_urine", "value": 4}, {"color": "#E8E8E8", "from": "Common Cold", "to": "redness_of_eyes", "value": 5}, {"color": "#E8E8E8", "from": "Migraine", "to": "headache", "value": 3}, {"color": "#E8E8E8", "from": "Hypoglycemia", "to": "headache", "value": 3}, {"color": "#E8E8E8", "from": "Migraine", "to": "depression", "value": 3}, {"color": "#E8E8E8", "from": "Migraine", "to": "blurred_and_distorted_vision", "value": 5}, {"color": "#E8E8E8", "from": "Dengue", "to": "loss_of_appetite", "value": 4}, {"color": "#E8E8E8", "from": "Urinary tract infection", "to": "burning_micturition", "value": 6}, {"color": "#E8E8E8", "from": "Hepatitis E", "to": "high_fever", "value": 7}, {"color": "#E8E8E8", "from": "hepatitis A", "to": "loss_of_appetite", "value": 4}, {"color": "#E8E8E8", "from": "Dimorphic hemmorhoids(piles)", "to": "bloody_stool", "value": 5}, {"color": "#E8E8E8", "from": "Hepatitis B", "to": "yellowing_of_eyes", "value": 4}, {"color": "#E8E8E8", "from": "Hypoglycemia", "to": "nausea", "value": 5}, {"color": "#E8E8E8", "from": "Hepatitis C", "to": "family_history", "value": 5}, {"color": "#E8E8E8", "from": "AIDS", "to": "high_fever", "value": 7}, {"color": "#E8E8E8", "from": "Hepatitis D", "to": "abdominal_pain", "value": 4}, {"color": "#E8E8E8", "from": "GERD", "to": "ulcers_on_tongue", "value": 4}, {"color": "#E8E8E8", "from": "Hepatitis D", "to": "joint_pain", "value": 3}, {"color": "#E8E8E8", "from": "Peptic ulcer diseae", "to": "indigestion", "value": 5}, {"color": "#E8E8E8", "from": "Migraine", "to": "acidity", "value": 3}, {"color": "#E8E8E8", "from": "Hepatitis C", "to": "yellowish_skin", "value": 3}, {"color": "#E8E8E8", "from": "Cervical spondylosis", "to": "loss_of_balance", "value": 4}, {"color": "#E8E8E8", "from": "Acne", "to": "blackheads", "value": 2}, {"color": "#E8E8E8", "from": "Jaundice", "to": "fatigue", "value": 4}, {"color": "#E8E8E8", "from": "Hypertension", "to": "loss_of_balance", "value": 4}, {"color": "#E8E8E8", "from": "Drug Reaction", "to": "skin_rash", "value": 3}, {"color": "#E8E8E8", "from": "Jaundice", "to": "vomiting", "value": 5}, {"color": "#E8E8E8", "from": "Alcoholic hepatitis", "to": "abdominal_pain", "value": 4}, {"color": "#E8E8E8", "from": "Diabetes", "to": "restlessness", "value": 5}, {"color": "#E8E8E8", "from": "(vertigo) Paroymsal  Positional Vertigo", "to": "spinning_movements", "value": 6}, {"color": "#E8E8E8", "from": "Typhoid", "to": "toxic_look_(typhos)", "value": 5}, {"color": "#E8E8E8", "from": "hepatitis A", "to": "muscle_pain", "value": 2}, {"color": "#E8E8E8", "from": "Alcoholic hepatitis", "to": "swelling_of_stomach", "value": 7}, {"color": "#E8E8E8", "from": "Common Cold", "to": "chills", "value": 3}, {"color": "#E8E8E8", "from": "Paralysis (brain hemorrhage)", "to": "headache", "value": 3}, {"color": "#E8E8E8", "from": "Heart attack", "to": "vomiting", "value": 5}, {"color": "#E8E8E8", "from": "Hyperthyroidism", "to": "diarrhoea", "value": 6}, {"color": "#E8E8E8", "from": "Psoriasis", "to": "skin_peeling", "value": 3}, {"color": "#E8E8E8", "from": "Paralysis (brain hemorrhage)", "to": "altered_sensorium", "value": 2}, {"color": "#E8E8E8", "from": "Typhoid", "to": "headache", "value": 3}, {"color": "#E8E8E8", "from": "Tuberculosis", "to": "cough", "value": 4}, {"color": "#E8E8E8", "from": "Dengue", "to": "joint_pain", "value": 3}, {"color": "#E8E8E8", "from": "Arthritis", "to": "painful_walking", "value": 2}, {"color": "#E8E8E8", "from": "Dengue", "to": "nausea", "value": 5}, {"color": "#E8E8E8", "from": "Dengue", "to": "back_pain", "value": 3}, {"color": "#E8E8E8", "from": "Diabetes", "to": "blurred_and_distorted_vision", "value": 5}, {"color": "#E8E8E8", "from": "Arthritis", "to": "stiff_neck", "value": 4}, {"color": "#E8E8E8", "from": "GERD", "to": "cough", "value": 4}, {"color": "#E8E8E8", "from": "Acne", "to": "skin_rash", "value": 3}, {"color": "#E8E8E8", "from": "Dengue", "to": "skin_rash", "value": 3}, {"color": "#E8E8E8", "from": "Hypothyroidism", "to": "brittle_nails", "value": 5}, {"color": "#E8E8E8", "from": "Chicken pox", "to": "malaise", "value": 6}, {"color": "#E8E8E8", "from": "Dengue", "to": "chills", "value": 3}, {"color": "#E8E8E8", "from": "GERD", "to": "acidity", "value": 3}, {"color": "#E8E8E8", "from": "Chicken pox", "to": "mild_fever", "value": 5}, {"color": "#E8E8E8", "from": "Tuberculosis", "to": "high_fever", "value": 7}, {"color": "#E8E8E8", "from": "Chicken pox", "to": "red_spots_over_body", "value": 3}, {"color": "#E8E8E8", "from": "Pneumonia", "to": "malaise", "value": 6}, {"color": "#E8E8E8", "from": "Tuberculosis", "to": "breathlessness", "value": 4}, {"color": "#E8E8E8", "from": "Peptic ulcer diseae", "to": "vomiting", "value": 5}, {"color": "#E8E8E8", "from": "Hypothyroidism", "to": "lethargy", "value": 2}, {"color": "#E8E8E8", "from": "Alcoholic hepatitis", "to": "vomiting", "value": 5}, {"color": "#E8E8E8", "from": "Peptic ulcer diseae", "to": "abdominal_pain", "value": 4}, {"color": "#E8E8E8", "from": "Osteoarthristis", "to": "swelling_joints", "value": 5}, {"color": "#E8E8E8", "from": "Fungal infection", "to": "itching", "value": 1}, {"color": "#E8E8E8", "from": "Malaria", "to": "nausea", "value": 5}, {"color": "#E8E8E8", "from": "(vertigo) Paroymsal  Positional Vertigo", "to": "unsteadiness", "value": 4}, {"color": "#E8E8E8", "from": "Psoriasis", "to": "joint_pain", "value": 3}, {"color": "#E8E8E8", "from": "Tuberculosis", "to": "fatigue", "value": 4}, {"color": "#E8E8E8", "from": "Hyperthyroidism", "to": "restlessness", "value": 5}, {"color": "#E8E8E8", "from": "Varicose veins", "to": "cramps", "value": 4}, {"color": "#E8E8E8", "from": "Alcoholic hepatitis", "to": "yellowish_skin", "value": 3}, {"color": "#E8E8E8", "from": "Varicose veins", "to": "bruising", "value": 4}, {"color": "#E8E8E8", "from": "Hypothyroidism", "to": "puffy_face_and_eyes", "value": 5}, {"color": "#E8E8E8", "from": "Hyperthyroidism", "to": "irritability", "value": 2}, {"color": "#E8E8E8", "from": "GERD", "to": "stomach_pain", "value": 5}, {"color": "#E8E8E8", "from": "Hepatitis E", "to": "loss_of_appetite", "value": 4}, {"color": "#E8E8E8", "from": "Arthritis", "to": "movement_stiffness", "value": 5}, {"color": "#E8E8E8", "from": "Hepatitis B", "to": "lethargy", "value": 2}, {"color": "#E8E8E8", "from": "Hepatitis B", "to": "yellow_urine", "value": 4}, {"color": "#E8E8E8", "from": "Diabetes", "to": "obesity", "value": 4}, {"color": "#E8E8E8", "from": "Gastroenteritis", "to": "dehydration", "value": 4}, {"color": "#E8E8E8", "from": "Chronic cholestasis", "to": "nausea", "value": 5}, {"color": "#E8E8E8", "from": "Hepatitis C", "to": "fatigue", "value": 4}, {"color": "#E8E8E8", "from": "Hepatitis E", "to": "vomiting", "value": 5}, {"color": "#E8E8E8", "from": "Pneumonia", "to": "fast_heart_rate", "value": 5}, {"color": "#E8E8E8", "from": "Chicken pox", "to": "lethargy", "value": 2}, {"color": "#E8E8E8", "from": "Alcoholic hepatitis", "to": "history_of_alcohol_consumption", "value": 5}, {"color": "#E8E8E8", "from": "Hyperthyroidism", "to": "abnormal_menstruation", "value": 6}, {"color": "#E8E8E8", "from": "Pneumonia", "to": "breathlessness", "value": 4}, {"color": "#E8E8E8", "from": "Common Cold", "to": "phlegm", "value": 5}, {"color": "#E8E8E8", "from": "Psoriasis", "to": "small_dents_in_nails", "value": 2}, {"color": "#E8E8E8", "from": "Hyperthyroidism", "to": "muscle_weakness", "value": 2}, {"color": "#E8E8E8", "from": "Hypoglycemia", "to": "anxiety", "value": 4}, {"color": "#E8E8E8", "from": "Hyperthyroidism", "to": "excessive_hunger", "value": 4}, {"color": "#E8E8E8", "from": "Hypertension", "to": "headache", "value": 3}, {"color": "#E8E8E8", "from": "hepatitis A", "to": "dark_urine", "value": 4}, {"color": "#E8E8E8", "from": "Typhoid", "to": "constipation", "value": 4}, {"color": "#E8E8E8", "from": "Psoriasis", "to": "skin_rash", "value": 3}, {"color": "#E8E8E8", "from": "Allergy", "to": "watering_from_eyes", "value": 4}, {"color": "#E8E8E8", "from": "Hepatitis B", "to": "yellowish_skin", "value": 3}, {"color": "#E8E8E8", "from": "Urinary tract infection", "to": "continuous_feel_of_urine", "value": 6}, {"color": "#E8E8E8", "from": "(vertigo) Paroymsal  Positional Vertigo", "to": "nausea", "value": 5}, {"color": "#E8E8E8", "from": "Hypothyroidism", "to": "enlarged_thyroid", "value": 6}, {"color": "#E8E8E8", "from": "Osteoarthristis", "to": "knee_pain", "value": 3}, {"color": "#E8E8E8", "from": "Osteoarthristis", "to": "joint_pain", "value": 3}, {"color": "#E8E8E8", "from": "Hypertension", "to": "dizziness", "value": 4}, {"color": "#E8E8E8", "from": "Hepatitis B", "to": "dark_urine", "value": 4}, {"color": "#E8E8E8", "from": "Osteoarthristis", "to": "painful_walking", "value": 2}, {"color": "#E8E8E8", "from": "Hypothyroidism", "to": "weight_gain", "value": 3}, {"color": "#E8E8E8", "from": "Varicose veins", "to": "swollen_blood_vessels", "value": 5}, {"color": "#E8E8E8", "from": "Hypertension", "to": "lack_of_concentration", "value": 3}, {"color": "#E8E8E8", "from": "Hyperthyroidism", "to": "fast_heart_rate", "value": 5}, {"color": "#E8E8E8", "from": "hepatitis A", "to": "abdominal_pain", "value": 4}, {"color": "#E8E8E8", "from": "Migraine", "to": "irritability", "value": 2}, {"color": "#E8E8E8", "from": "Chronic cholestasis", "to": "yellowish_skin", "value": 3}, {"color": "#E8E8E8", "from": "Diabetes", "to": "fatigue", "value": 4}, {"color": "#E8E8E8", "from": "hepatitis A", "to": "yellowing_of_eyes", "value": 4}, {"color": "#E8E8E8", "from": "(vertigo) Paroymsal  Positional Vertigo", "to": "headache", "value": 3}, {"color": "#E8E8E8", "from": "Heart attack", "to": "breathlessness", "value": 4}, {"color": "#E8E8E8", "from": "Impetigo", "to": "yellow_crust_ooze", "value": 3}, {"color": "#E8E8E8", "from": "Common Cold", "to": "cough", "value": 4}, {"color": "#E8E8E8", "from": "Hyperthyroidism", "to": "fatigue", "value": 4}, {"color": "#E8E8E8", "from": "hepatitis A", "to": "yellowish_skin", "value": 3}, {"color": "#E8E8E8", "from": "Migraine", "to": "stiff_neck", "value": 4}, {"color": "#E8E8E8", "from": "Common Cold", "to": "headache", "value": 3}, {"color": "#E8E8E8", "from": "Typhoid", "to": "diarrhoea", "value": 6}, {"color": "#E8E8E8", "from": "Hypothyroidism", "to": "depression", "value": 3}, {"color": "#E8E8E8", "from": "Hepatitis C", "to": "nausea", "value": 5}, {"color": "#E8E8E8", "from": "Pneumonia", "to": "sweating", "value": 3}, {"color": "#E8E8E8", "from": "Tuberculosis", "to": "weight_loss", "value": 3}, {"color": "#E8E8E8", "from": "Dimorphic hemmorhoids(piles)", "to": "pain_during_bowel_movements", "value": 5}, {"color": "#E8E8E8", "from": "GERD", "to": "vomiting", "value": 5}, {"color": "#E8E8E8", "from": "Hepatitis E", "to": "abdominal_pain", "value": 4}, {"color": "#E8E8E8", "from": "Hepatitis B", "to": "itching", "value": 1}, {"color": "#E8E8E8", "from": "Typhoid", "to": "vomiting", "value": 5}, {"color": "#E8E8E8", "from": "Migraine", "to": "indigestion", "value": 5}, {"color": "#E8E8E8", "from": "Chicken pox", "to": "skin_rash", "value": 3}, {"color": "#E8E8E8", "from": "Hyperthyroidism", "to": "mood_swings", "value": 3}, {"color": "#E8E8E8", "from": "Hepatitis E", "to": "joint_pain", "value": 3}, {"color": "#E8E8E8", "from": "Malaria", "to": "muscle_pain", "value": 2}, {"color": "#E8E8E8", "from": "Hyperthyroidism", "to": "sweating", "value": 3}, {"color": "#E8E8E8", "from": "Dimorphic hemmorhoids(piles)", "to": "irritation_in_anus", "value": 6}, {"color": "#E8E8E8", "from": "Gastroenteritis", "to": "diarrhoea", "value": 6}, {"color": "#E8E8E8", "from": "Acne", "to": "scurring", "value": 2}, {"color": "#E8E8E8", "from": "Allergy", "to": "chills", "value": 3}, {"color": "#E8E8E8", "from": "Bronchial Asthma", "to": "fatigue", "value": 4}, {"color": "#E8E8E8", "from": "Hypothyroidism", "to": "swollen_extremeties", "value": 5}, {"color": "#E8E8E8", "from": "Hypothyroidism", "to": "cold_hands_and_feets", "value": 5}, {"color": "#E8E8E8", "from": "Hypoglycemia", "to": "drying_and_tingling_lips", "value": 4}, {"color": "#E8E8E8", "from": "Hypothyroidism", "to": "dizziness", "value": 4}, {"color": "#E8E8E8", "from": "Dengue", "to": "high_fever", "value": 7}, {"color": "#E8E8E8", "from": "Pneumonia", "to": "rusty_sputum", "value": 4}, {"color": "#E8E8E8", "from": "Varicose veins", "to": "prominent_veins_on_calf", "value": 6}, {"color": "#E8E8E8", "from": "Osteoarthristis", "to": "neck_pain", "value": 5}, {"color": "#E8E8E8", "from": "Arthritis", "to": "muscle_weakness", "value": 2}, {"color": "#E8E8E8", "from": "Impetigo", "to": "red_sore_around_nose", "value": 2}, {"color": "#E8E8E8", "from": "Hypoglycemia", "to": "vomiting", "value": 5}, {"color": "#E8E8E8", "from": "Peptic ulcer diseae", "to": "internal_itching", "value": 4}, {"color": "#E8E8E8", "from": "Hepatitis E", "to": "acute_liver_failure", "value": 6}, {"color": "#E8E8E8", "from": "Typhoid", "to": "abdominal_pain", "value": 4}, {"color": "#E8E8E8", "from": "Acne", "to": "pus_filled_pimples", "value": 2}, {"color": "#E8E8E8", "from": "Hypothyroidism", "to": "fatigue", "value": 4}, {"color": "#E8E8E8", "from": "Cervical spondylosis", "to": "dizziness", "value": 4}, {"color": "#E8E8E8", "from": "Hepatitis B", "to": "fatigue", "value": 4}, {"color": "#E8E8E8", "from": "Malaria", "to": "headache", "value": 3}, {"color": "#E8E8E8", "from": "Hepatitis B", "to": "receiving_blood_transfusion", "value": 5}, {"color": "#E8E8E8", "from": "Hepatitis D", "to": "fatigue", "value": 4}, {"color": "#E8E8E8", "from": "Allergy", "to": "shivering", "value": 5}, {"color": "#E8E8E8", "from": "Hypertension", "to": "chest_pain", "value": 7}, {"color": "#E8E8E8", "from": "Hepatitis E", "to": "nausea", "value": 5}, {"color": "#E8E8E8", "from": "Hepatitis B", "to": "malaise", "value": 6}, {"color": "#E8E8E8", "from": "Typhoid", "to": "chills", "value": 3}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"physics": {"forceAtlas2Based": {"gravitationalConstant": -86, "springLength": 100}, "minVelocity": 0.75, "solver": "forceAtlas2Based"}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+                    network.on("selectNode", neighbourhoodHighlight);
+                  
+
+                  
+
+
+                  
+                      network.on("stabilizationProgress", function(params) {
+                          document.getElementById('loadingBar').removeAttribute("style");
+                          var maxWidth = 496;
+                          var minWidth = 20;
+                          var widthFactor = params.iterations/params.total;
+                          var width = Math.max(minWidth,maxWidth * widthFactor);
+                          document.getElementById('bar').style.width = width + 'px';
+                          document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+                      });
+                      network.once("stabilizationIterationsDone", function() {
+                          document.getElementById('text').innerHTML = '100%';
+                          document.getElementById('bar').style.width = '496px';
+                          document.getElementById('loadingBar').style.opacity = 0;
+                          // really clean the dom element
+                          setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
+                      });
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
