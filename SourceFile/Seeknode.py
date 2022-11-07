@@ -1,7 +1,7 @@
 from pyvis.network import Network
 import pandas as pd
 
-got_net = Network(height='750px', width='100%', bgcolor='#F9F9FB', 
+got_net = Network(height='750px', width='100%', bgcolor='#F9F9FB',
 font_color='#232333', notebook = False, select_menu = True)
 
 # set the physics layout of the network
@@ -30,7 +30,7 @@ neighbor_map = got_net.get_adj_list()
 
 # add neighbor data to node hover data
 for node in got_net.nodes:
-    node['title'] += ' Neighbors:<br>' + 
+    node['title'] += ' Neighbors:<br>' +
 '<br>'.join(neighbor_map[node['id']])
     node['value'] = len(neighbor_map[node['id']])
 
@@ -49,4 +49,4 @@ got_net.set_options("""
     }
 """)
 
-got_net.show('DiseaseDatabase.html')
+got_net.show('index.html')
